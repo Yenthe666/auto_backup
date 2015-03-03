@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<openerp>
+	<data>
+	<record model="ir.ui.view" id="view_backup_conf_form">
+			<field name="name">Configure Backup</field>
+			<field name="model">db.backup</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Test">
+					<group col="4" colspan="4">
+					<separator col="2" string="IP Configuration"/>
+					<separator col="2" string="Database Configuration"/>
+                    </group>
+					<group>
+					<field name="host" colspan="2"/>
+					<field name="name" />
+					<field name="port" />
+					<field name="bkp_dir" />
+					</group>
+					<newline/>
+                    <separator string="Help" colspan="2" />
+					<newline/>
+                    <label   align="0.0" string="This configures the scheduler for automatic backup of the given database running on given host at given port on regular intervals." />
+					<newline/>
+                    <label  align="0.0"  string="Automatic backup of all the databases under this can be scheduled as follows: "/>
+					<newline/>
+ 				    <label  align="0.0" string="1) Go to Administration / Configuration / Scheduler / Scheduled Actions"/>
+ 				    <newline/>
+ 				    <label align="0.0"  string="2) Schedule new action(create a new record)"/>
+ 				    <newline/>
+ 				    <label align="0.0"  string="3) Set 'Object' to 'db.backup' and 'Function' to 'schedule_backup' under page 'Technical Data'"/>
+ 				    <newline/>
+ 				    <label align="0.0"  string="4) Set other values as per your preference"/>
+				</form>
+			</field>
+	</record>
+	
+	<record model="ir.ui.view" id="view_backup_conf_tree">
+			<field name="name">Configure Backup</field>
+			<field name="model">db.backup</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="Test">
+					<field name='host'/>
+					<field name='port'/>
+					<field name='name'/>
+					<field name='bkp_dir'/>
+				</tree>
+			</field>
+	</record>
+	
+	<record model="ir.ui.view" id="view_backup_conf_search">
+			<field name="name">Configure Backup</field>
+			<field name="model">db.backup</field>
+			<field name="type">search</field>
+			<field name="arch" type="xml">
+				<search string="Test">
+					<field name='host'/>
+					<field name='port'/>
+					<field name='name'/>
+					<field name='bkp_dir'/>
+				</search>
+			</field>
+	</record>
+
+	<record model="ir.actions.act_window" id="action_backup_conf_form">
+			<field name="name">Configure Backup</field>
+			<field name="res_model">db.backup</field>
+			<field name="view_type">form</field>
+			<field name='view_mode'>tree,form</field>
+			<field name='view_id' ref='view_backup_conf_tree'/>
+	</record>
+	<menuitem parent="base.menu_config" action="action_backup_conf_form" id="backup_conf_menu"/>
+	</data>
+</openerp>
