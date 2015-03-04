@@ -44,7 +44,7 @@ def execute(connector, method, *args):
 
 addons_path = tools.config['addons_path'] + '/auto_backup/DBbackups'
 
-class db_backup(osv.osv):
+class db_backup(osv.Model):
     _name = 'db.backup'
     
     def get_db_list(self, cr, user, ids, host='localhost', port='8069', context={}):
@@ -52,6 +52,11 @@ class db_backup(osv.osv):
         conn = xmlrpclib.ServerProxy(uri + '/xmlrpc/db')
         db_list = execute(conn, 'list')
         return db_list
+
+    def _get_db_name(self,cr,uid, vals,context=None):
+        attach_pool = self.pool.get("ir.logging")
+        dbName = cr.dbname
+        return dbName
         
     _columns = {
                     'host' : fields.char('Host', size=100, required='True'),
@@ -59,12 +64,13 @@ class db_backup(osv.osv):
                     'name' : fields.char('Database', size=100, required='True',help='Database you want to schedule backups for'),
                     'bkp_dir' : fields.char('Backup Directory', size=100, help='Absolute path for storing the backups', required='True')
                 }
-    
+
     _defaults = {
                     #'bkp_dir' : lambda *a : addons_path,
                     'bkp_dir' : '/odoo/backups',
                     'host' : lambda *a : 'localhost',
-                    'port' : lambda *a : '8069'
+                    'port' : lambda *a : '8069',
+                    'name': _get_db_name,
                  }
     
     def _check_db_exist(self, cr, user, ids):
