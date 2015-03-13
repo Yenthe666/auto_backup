@@ -30,8 +30,7 @@ import re
 try:
     import pysftp
 except ImportError:
-    raise ImportError('This module needs pysftp to automaticly write backups to the FTP through SFTP.')
-    raise ImportError('Please install pysftp on your system.(sudo pip install pysftp)')
+    raise ImportError('This module needs pysftp to automaticly write backups to the FTP through SFTP. Please install pysftp on your system. (sudo pip install pysftp)')
 from openerp.osv import fields,osv,orm
 from openerp import tools
 from openerp import netsvc
