@@ -24,7 +24,7 @@
     "name" : "Database Auto-Backup",
     "version" : "1.0",
     "author" : "VanRoey.be - Yenthe Van Ginneken",
-    "website" : "http://www.vanroey.be/",
+    "website" : "http://www.vanroey.be/applications/bedrijfsbeheer/odoo",
     "category" : "Generic Modules",
     "summary": "Backups",
     "description": """The Database Auto-Backup module enables the user to make configurations for the automatic backup of the database. Backups can be taken on the local system or on a remote server, through SFTP.

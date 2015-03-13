@@ -226,10 +226,13 @@ password=passwordLogin)
                     #At this point the SFTP backup failed. We will now check if the user wants
                     #an e-mail notification about this.
                     if rec.sendmailsftpfail:
-                        ir_mail_server = self.pool.get('ir.mail_server') 
-                        message = "Dear,\n\nThe backup for the server " + rec.host + " (IP: " + rec.sftpip + ")  failed.Please check the following details:\n\nIP address SFTP server: " + rec.sftpip + "\nUsername: " + rec.sftpusername + "\nPassword: " + rec.sftppassword + "\n\nError details: " + tools.ustr(e) + "\n\nWith kind regards"
-                        msg = ir_mail_server.build_email("auto_backup@" + rec.name + ".com", [rec.emailtonotify], "Backup from " + rec.host + "(" + rec.sftpip + ") failed", message) 
-                        ir_mail_server.send_email(cr, user, msg)
+                        try:
+                            ir_mail_server = self.pool.get('ir.mail_server') 
+                            message = "Dear,\n\nThe backup for the server " + rec.host + " (IP: " + rec.sftpip + ") failed.Please check the following details:\n\nIP address SFTP server: " + rec.sftpip + "\nUsername: " + rec.sftpusername + "\nPassword: " + rec.sftppassword + "\n\nError details: " + tools.ustr(e) + "\n\nWith kind regards"
+                            msg = ir_mail_server.build_email("auto_backup@" + rec.name + ".com", [rec.emailtonotify], "Backup from " + rec.host + "(" + rec.sftpip + ") failed", message) 
+                            ir_mail_server.send_email(cr, user, msg)
+                        except Exception:
+                            pass
 
             """Remove all old files (on local server) in case this is configured..
             This is done after the SFTP writing to prevent unusual behaviour:
