@@ -26,7 +26,7 @@ msgstr "%s"
 #. module: auto_backup
 #: help:db.backup,bkp_dir:0
 msgid "Absolute path for storing the backups"
-msgstr "备份据对路径"
+msgstr "备份绝对路径"
 
 #. module: auto_backup
 #: field:db.backup,sendmailsftpfail:0
