@@ -1,3 +1,16 @@
+# Python compiled files
+*.pyc
+*.pyo
+
+# editor backups(vim,gedit)
+*.swp
+*~
+
+# Source code backups & tool logs
+*.orig
+*.bak
+*.log
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
