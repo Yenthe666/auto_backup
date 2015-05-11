@@ -147,7 +147,6 @@ password=passwordLogin)
                 #Create name for dumpfile.
                 bkp_file='%s_%s.dump' % (time.strftime('%d_%m_%Y_%H_%M_%S'),rec.name)
                 file_path = os.path.join(rec.bkp_dir,bkp_file)
-                fp = open(file_path,'wb')
                 uri = 'http://' + rec.host + ':' + rec.port
                 conn = xmlrpclib.ServerProxy(uri + '/xmlrpc/db')
                 bkp=''
@@ -156,6 +155,7 @@ password=passwordLogin)
                 except:
                     logger.notifyChannel('backup', netsvc.LOG_INFO, "Couldn't backup database %s. Bad database administrator password for server running at http://%s:%s" %(rec.name, rec.host, rec.port))
                     continue
+                fp = open(file_path,'wb')
                 bkp = base64.decodestring(bkp)
                 fp.write(bkp)
                 fp.close()
