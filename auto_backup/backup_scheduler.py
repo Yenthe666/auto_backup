@@ -27,15 +27,15 @@ import time
 import datetime
 import base64
 import re
+import logging
+
 try:
     import pysftp
 except ImportError:
-    raise ImportError('This module needs pysftp to automaticly write backups to the FTP through SFTP.Please install pysftp on your system.(sudo pip install pysftp)')
+    raise ImportError('This module needs pysftp to automaticly write backups to the FTP through SFTP. Please install pysftp on your system. (sudo pip install pysftp)')
 from openerp.osv import fields,osv,orm
-from openerp import tools
-from openerp import netsvc
 from openerp import tools, _
-import logging
+
 _logger = logging.getLogger(__name__)
 
 def execute(connector, method, *args):
@@ -156,16 +156,16 @@ password=passwordLogin,port=portHost)
                 conn = xmlrpclib.ServerProxy(uri + '/xmlrpc/db')
                 bkp=''
                 try:
-                    bkp = execute(conn, 'dump', tools.config['admin_passwd'], rec.name)
+                    bkp = execute(conn, 'dump', tools.config['admin_passwd'], rec.name, 'c')
                 except:
-                    logger.notifyChannel('backup', netsvc.LOG_INFO, "Couldn't backup database %s. Bad database administrator password for server running at http://%s:%s" %(rec.name, rec.host, rec.port))
+                    _logger.debug("Couldn't backup database %s. Bad database administrator password for server running at http://%s:%s" %(rec.name, rec.host, rec.port))
                     continue
                 bkp = base64.decodestring(bkp)
                 fp = open(file_path,'wb')
                 fp.write(bkp)
                 fp.close()
             else:
-                logger.notifyChannel('backup', netsvc.LOG_INFO, "database %s doesn't exist on http://%s:%s" %(rec.name, rec.host, rec.port))
+                _logger.debug("database %s doesn't exist on http://%s:%s" %(rec.name, rec.host, rec.port))
 
             #Check if user wants to write to SFTP or not.
             if rec.sftpwrite is True:
