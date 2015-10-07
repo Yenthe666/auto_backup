@@ -156,7 +156,7 @@ password=passwordLogin,port=portHost)
                 conn = xmlrpclib.ServerProxy(uri + '/xmlrpc/db')
                 bkp=''
                 try:
-                    bkp = execute(conn, 'dump', tools.config['admin_passwd'], rec.name, 'c')
+                    bkp = execute(conn, 'dump', tools.config['admin_passwd'], rec.name, 'zip')
                 except:
                     _logger.debug("Couldn't backup database %s. Bad database administrator password for server running at http://%s:%s" %(rec.name, rec.host, rec.port))
                     continue
