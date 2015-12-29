@@ -52,8 +52,8 @@ class db_backup(osv.Model):
     _name = 'db.backup'
     
     def get_db_list(self, cr, user, ids, host, port, context={}):
-        print("Host: " + host)
-        print("Port: " + port)
+        _logger.debug("Host: " + host)
+        _logger.debug("Port: " + port)
         uri = 'http://' + host + ':' + port
         conn = xmlrpclib.ServerProxy(uri + '/xmlrpc/db')
         db_list = execute(conn, 'list')
@@ -184,7 +184,7 @@ password=passwordLogin, port=portHost)
                     srv._transport.set_keepalive(30)
                     #Move to the correct directory on external server. If the user made a typo in his path with multiple slashes (/odoo//backups/) it will be fixed by this regex.
                     pathToWriteTo = re.sub('([/]{2,5})+','/',pathToWriteTo)
-                    print(pathToWriteTo)
+                    _logger.debug('sftp remote path:%s' % pathToWriteTo)
                     try:
                         srv.chdir(pathToWriteTo)
                     except IOError:
@@ -195,7 +195,7 @@ password=passwordLogin, port=portHost)
                             try:
                                 srv.chdir(currentDir)
                             except:
-                                print('(Part of the) path didn\'t exist. Creating it now at ' + currentDir)
+                                _logger.info('(Part of the) path didn\'t exist. Creating it now at ' + currentDir)
                                 #Make directory and then navigate into it
                                 srv.mkdir(currentDir, mode=777)
                                 srv.chdir(currentDir)
@@ -225,7 +225,7 @@ password=passwordLogin, port=portHost)
                         if delta.days >= rec.daystokeepsftp:
                             #Only delete files, no directories!
                             if srv.isfile(fullpath) and ".dump" in file:
-                                print("Delete: " + file)
+                                _logger.info("Delete sftp server out-of-date file: " + file)
                                 srv.unlink(file)
                     #Close the SFTP session.
                     srv.close()
@@ -261,7 +261,7 @@ password=passwordLogin, port=portHost)
                     if delta.days >= rec.daystokeep:
                         #Only delete files (which are .dump), no directories.
                         if os.path.isfile(fullpath) and ".dump" in f:
-                            print("Delete: " + fullpath)
+                            _logger.info("Delete local out-of-date file: " + fullpath)
                             os.remove(fullpath)
 
 db_backup()
