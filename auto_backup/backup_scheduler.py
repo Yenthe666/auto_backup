@@ -207,8 +207,12 @@ password=passwordLogin, port=portHost)
                     for f in os.listdir(dir):
                         fullpath = os.path.join(dir, f)
                         if os.path.isfile(fullpath):
-                            print(fullpath)
-                            srv.put(fullpath)
+                            if not srv.exists(f):
+                                _logger.info('File:%s is not yet on the remote FTP Server ------ Copying' % fullpath)
+                                srv.put(fullpath)
+                                _logger.info('Copying File:%s------success' % fullpath)
+                            else:
+                                _logger.debug('File:%s already exists on the remote FTP Server ------ skipped' % fullpath)
 
                     #Navigate in to the correct folder.
                     srv.chdir(pathToWriteTo)
