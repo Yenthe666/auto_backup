@@ -70,6 +70,7 @@ class db_backup(osv.Model):
                     'port' : fields.char('Port', size=10, required='True'),
                     'name' : fields.char('Database', size=100, required='True',help='Database you want to schedule backups for'),
                     'bkp_dir' : fields.char('Backup Directory', size=100, help='Absolute path for storing the backups', required='True'),
+                    'backup_type': fields.selection([('zip', 'Zip'), ('dump', 'Dump')], 'Backup Type', required=True),
                     'autoremove': fields.boolean('Auto. Remove Backups', help="If you check this option you can choose to automaticly remove the backup after xx days"),
                     'daystokeep': fields.integer('Remove after x days', 
                      help="Choose after how many days the backup should be deleted. For example:\nIf you fill in 5 the backups will be removed after 5 days.",required=True),
@@ -88,6 +89,7 @@ class db_backup(osv.Model):
     _defaults = {
                     #'bkp_dir' : lambda *a : addons_path,
                     'bkp_dir' : '/odoo/backups',
+                    'backup_type': 'zip',
                     'host' : lambda *a : 'localhost',
                     'port' : lambda *a : '8069',
                     'name': _get_db_name,
@@ -150,13 +152,13 @@ password=passwordLogin,port=portHost)
                 except:
                     raise
                 #Create name for dumpfile.
-                bkp_file='%s_%s.dump' % (time.strftime('%d_%m_%Y_%H_%M_%S'),rec.name)
+                bkp_file='%s_%s.%s' % (time.strftime('%d_%m_%Y_%H_%M_%S'),rec.name, rec.backup_type)
                 file_path = os.path.join(rec.bkp_dir,bkp_file)
                 uri = 'http://' + rec.host + ':' + rec.port
                 conn = xmlrpclib.ServerProxy(uri + '/xmlrpc/db')
                 bkp=''
                 try:
-                    bkp = execute(conn, 'dump', tools.config['admin_passwd'], rec.name, 'zip')
+                    bkp = execute(conn, 'dump', tools.config['admin_passwd'], rec.name, rec.backup_type)
                 except:
                     _logger.debug("Couldn't backup database %s. Bad database administrator password for server running at http://%s:%s" %(rec.name, rec.host, rec.port))
                     continue

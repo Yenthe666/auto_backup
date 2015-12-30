@@ -14,6 +14,7 @@
 						<field name="host" colspan="2"/>
 						<field name="name" />
 						<field name="port" />
+						<field name="backup_type"/>
 						<field name="bkp_dir" />
 						<field name="autoremove" />
 						<field name="daystokeep" attrs="{'invisible': [('autoremove','=',False)]}"/>
