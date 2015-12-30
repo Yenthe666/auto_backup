@@ -186,7 +186,7 @@ password=passwordLogin, port=portHost)
                     srv._transport.set_keepalive(30)
                     #Move to the correct directory on external server. If the user made a typo in his path with multiple slashes (/odoo//backups/) it will be fixed by this regex.
                     pathToWriteTo = re.sub('([/]{2,5})+','/',pathToWriteTo)
-                    _logger.debug('sftp remote path:%s' % pathToWriteTo)
+                    _logger.debug('sftp remote path: %s' % pathToWriteTo)
                     try:
                         srv.chdir(pathToWriteTo)
                     except IOError:
@@ -208,11 +208,11 @@ password=passwordLogin, port=portHost)
                         fullpath = os.path.join(dir, f)
                         if os.path.isfile(fullpath):
                             if not srv.exists(f):
-                                _logger.info('File:%s is not yet on the remote FTP Server ------ Copying' % fullpath)
+                                _logger.info('The file %s is not yet on the remote FTP Server ------ Copying file' % fullpath)
                                 srv.put(fullpath)
-                                _logger.info('Copying File:%s------success' % fullpath)
+                                _logger.info('Copying File % s------ success' % fullpath)
                             else:
-                                _logger.debug('File:%s already exists on the remote FTP Server ------ skipped' % fullpath)
+                                _logger.debug('File %s already exists on the remote FTP Server ------ skipped' % fullpath)
 
                     #Navigate in to the correct folder.
                     srv.chdir(pathToWriteTo)
@@ -231,7 +231,7 @@ password=passwordLogin, port=portHost)
                         if delta.days >= rec.daystokeepsftp:
                             #Only delete files, no directories!
                             if srv.isfile(fullpath) and ".dump" in file:
-                                _logger.info("Delete sftp server out-of-date file: " + file)
+                                _logger.info("Delete too old file from SFTP servers: " + file)
                                 srv.unlink(file)
                     #Close the SFTP session.
                     srv.close()
