@@ -108,6 +108,9 @@ background-repeat: no-repeat;background-position: 10px center;color: #9F6000;bac
 			<field name='view_mode'>tree,form</field>
 			<field name='view_id' ref='view_backup_conf_tree'/>
 	</record>
-	<menuitem parent="base.menu_config" action="action_backup_conf_form" id="backup_conf_menu"/>
+
+	<menuitem id="auto_backup_menu" name="Back-ups"
+                  parent="base.menu_custom" sequence="0"/>
+	<menuitem parent="auto_backup_menu" action="action_backup_conf_form" id="backup_conf_menu"/>
 	</data>
 </openerp>
