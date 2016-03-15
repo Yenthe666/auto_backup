@@ -41,6 +41,9 @@ Automatic backup for all such configured databases can then be scheduled as foll
 4) If you want to write backups to a remote location you should fill in the SFTP details.
 """,
     "depends" : ['base'],
+    "external_dependencies": {
+        'python': ['pysftp']
+    },
     "init_xml" : [],
     "demo_xml" : [],
     "update_xml" : ["bkp_conf_view.xml","backup_data.xml"],
