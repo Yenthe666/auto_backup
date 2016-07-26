@@ -27,15 +27,15 @@ import time
 import datetime
 import base64
 import re
+import logging
+
 try:
     import pysftp
 except ImportError:
-    raise ImportError('This module needs pysftp to automaticly write backups to the FTP through SFTP.Please install pysftp on your system.(sudo pip install pysftp)')
+    raise ImportError('This module needs pysftp to automaticly write backups to the FTP through SFTP. Please install pysftp on your system. (sudo pip install pysftp)')
 from openerp.osv import fields,osv,orm
-from openerp import tools
-from openerp import netsvc
 from openerp import tools, _
-import logging
+
 _logger = logging.getLogger(__name__)
 
 def execute(connector, method, *args):
@@ -52,8 +52,8 @@ class db_backup(osv.Model):
     _name = 'db.backup'
     
     def get_db_list(self, cr, user, ids, host, port, context={}):
-        print("Host: " + host)
-        print("Port: " + port)
+        _logger.debug("Host: " + host)
+        _logger.debug("Port: " + port)
         uri = 'http://' + host + ':' + port
         conn = xmlrpclib.ServerProxy(uri + '/xmlrpc/db')
         db_list = execute(conn, 'list')
@@ -70,6 +70,7 @@ class db_backup(osv.Model):
                     'port' : fields.char('Port', size=10, required='True'),
                     'name' : fields.char('Database', size=100, required='True',help='Database you want to schedule backups for'),
                     'bkp_dir' : fields.char('Backup Directory', size=100, help='Absolute path for storing the backups', required='True'),
+                    'backup_type': fields.selection([('zip', 'Zip'), ('dump', 'Dump')], 'Backup Type', required=True),
                     'autoremove': fields.boolean('Auto. Remove Backups', help="If you check this option you can choose to automaticly remove the backup after xx days"),
                     'daystokeep': fields.integer('Remove after x days', 
                      help="Choose after how many days the backup should be deleted. For example:\nIf you fill in 5 the backups will be removed after 5 days.",required=True),
@@ -88,6 +89,7 @@ class db_backup(osv.Model):
     _defaults = {
                     #'bkp_dir' : lambda *a : addons_path,
                     'bkp_dir' : '/odoo/backups',
+                    'backup_type': 'zip',
                     'host' : lambda *a : 'localhost',
                     'port' : lambda *a : '8069',
                     'name': _get_db_name,
@@ -150,22 +152,22 @@ password=passwordLogin,port=portHost)
                 except:
                     raise
                 #Create name for dumpfile.
-                bkp_file='%s_%s.dump' % (time.strftime('%d_%m_%Y_%H_%M_%S'),rec.name)
+                bkp_file='%s_%s.%s' % (time.strftime('%d_%m_%Y_%H_%M_%S'),rec.name, rec.backup_type)
                 file_path = os.path.join(rec.bkp_dir,bkp_file)
                 uri = 'http://' + rec.host + ':' + rec.port
                 conn = xmlrpclib.ServerProxy(uri + '/xmlrpc/db')
                 bkp=''
                 try:
-                    bkp = execute(conn, 'dump', tools.config['admin_passwd'], rec.name)
+                    bkp = execute(conn, 'dump', tools.config['admin_passwd'], rec.name, rec.backup_type)
                 except:
-                    logger.notifyChannel('backup', netsvc.LOG_INFO, "Couldn't backup database %s. Bad database administrator password for server running at http://%s:%s" %(rec.name, rec.host, rec.port))
+                    _logger.debug("Couldn't backup database %s. Bad database administrator password for server running at http://%s:%s" %(rec.name, rec.host, rec.port))
                     continue
                 bkp = base64.decodestring(bkp)
                 fp = open(file_path,'wb')
                 fp.write(bkp)
                 fp.close()
             else:
-                logger.notifyChannel('backup', netsvc.LOG_INFO, "database %s doesn't exist on http://%s:%s" %(rec.name, rec.host, rec.port))
+                _logger.debug("database %s doesn't exist on http://%s:%s" %(rec.name, rec.host, rec.port))
 
             #Check if user wants to write to SFTP or not.
             if rec.sftpwrite is True:
@@ -184,7 +186,7 @@ password=passwordLogin, port=portHost)
                     srv._transport.set_keepalive(30)
                     #Move to the correct directory on external server. If the user made a typo in his path with multiple slashes (/odoo//backups/) it will be fixed by this regex.
                     pathToWriteTo = re.sub('([/]{2,5})+','/',pathToWriteTo)
-                    print(pathToWriteTo)
+                    _logger.debug('sftp remote path: %s' % pathToWriteTo)
                     try:
                         srv.chdir(pathToWriteTo)
                     except IOError:
@@ -195,7 +197,7 @@ password=passwordLogin, port=portHost)
                             try:
                                 srv.chdir(currentDir)
                             except:
-                                print('(Part of the) path didn\'t exist. Creating it now at ' + currentDir)
+                                _logger.info('(Part of the) path didn\'t exist. Creating it now at ' + currentDir)
                                 #Make directory and then navigate into it
                                 srv.mkdir(currentDir, mode=777)
                                 srv.chdir(currentDir)
@@ -205,8 +207,12 @@ password=passwordLogin, port=portHost)
                     for f in os.listdir(dir):
                         fullpath = os.path.join(dir, f)
                         if os.path.isfile(fullpath):
-                            print(fullpath)
-                            srv.put(fullpath)
+                            if not srv.exists(f):
+                                _logger.info('The file %s is not yet on the remote FTP Server ------ Copying file' % fullpath)
+                                srv.put(fullpath)
+                                _logger.info('Copying File % s------ success' % fullpath)
+                            else:
+                                _logger.debug('File %s already exists on the remote FTP Server ------ skipped' % fullpath)
 
                     #Navigate in to the correct folder.
                     srv.chdir(pathToWriteTo)
@@ -225,7 +231,7 @@ password=passwordLogin, port=portHost)
                         if delta.days >= rec.daystokeepsftp:
                             #Only delete files, no directories!
                             if srv.isfile(fullpath) and ".dump" in file:
-                                print("Delete: " + file)
+                                _logger.info("Delete too old file from SFTP servers: " + file)
                                 srv.unlink(file)
                     #Close the SFTP session.
                     srv.close()
@@ -261,7 +267,7 @@ password=passwordLogin, port=portHost)
                     if delta.days >= rec.daystokeep:
                         #Only delete files (which are .dump), no directories.
                         if os.path.isfile(fullpath) and ".dump" in f:
-                            print("Delete: " + fullpath)
+                            _logger.info("Delete local out-of-date file: " + fullpath)
                             os.remove(fullpath)
 
 db_backup()
