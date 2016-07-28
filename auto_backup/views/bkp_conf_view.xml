@@ -12,30 +12,30 @@
           </group>
 	  <group>
 	    <field name="host" colspan="2"/>
-	    <field name="name" />
-	    <field name="port" />
+	    <field name="name"/>
+	    <field name="port"/>
 	    <field name="backup_type"/>
-	    <field name="bkp_dir" />
-	    <field name="autoremove" />
-	    <field name="daystokeep" attrs="{'invisible': [('autoremove','=',False)]}"/>
+	    <field name="folder" />
+	    <field name="autoremove"/>
+	    <field name="days_to_keep" attrs="{'invisible': [('autoremove','=',False)]}"/>
 	  </group>
 	  <group col="4" colspan="4">
 	    <separator col="2" string="SFTP"/>
           </group>
           <div style="width:50%;border-radius:10px;margin: 10px 0px;padding:15px 10px 15px 10px;
-background-repeat: no-repeat;background-position: 10px center;color: #9F6000;background-color: #FEEFB3;" attrs="{'invisible': [('sftpwrite','=',False)]}"><b>Warning:</b> Use SFTP with caution! This writes files to external servers under the path you specify.</div>
+background-repeat: no-repeat;background-position: 10px center;color: #9F6000;background-color: #FEEFB3;" attrs="{'invisible': [('sftp_write','=',False)]}"><b>Warning:</b> Use SFTP with caution! This writes files to external servers under the path you specify.</div>
 	    <group>
-              <field name="sftpwrite"/>
-              <field name="sftpip" 
-              attrs="{'invisible':[('sftpwrite', '=', False)],'required':[('sftpwrite', '=', True)]}"/>
-              <field name="sftpport" attrs="{'invisible':[('sftpwrite', '=', False)],'required':[('sftpwrite', '=', True)]}"/>
-              <field name="sftpusername" attrs="{'invisible':[('sftpwrite', '=', False)], 'required':[('sftpwrite', '=', True)]}"/>
-              <field name="sftppassword" attrs="{'invisible':[('sftpwrite', '=', False)],'required': [('sftpwrite', '=', True)]}" password="True"/>
-              <field name="sftppath" attrs="{'invisible':[('sftpwrite', '==', False)],'required':[('sftpwrite', '==', True)]}" placeholder="For example: /odoo/backups/"/>
-              <field name="daystokeepsftp" attrs="{'invisible': [('sftpwrite', '=', False)], 'required': [('sftpwrite', '=', True)]}"/>
-              <field name="sendmailsftpfail" attrs="{'invisible': [('sftpwrite','=',False)]}"/>
-	      <field name="emailtonotify" attrs="{'invisible':['|',('sendmailsftpfail', '==', False), ('sftpwrite', '=', False)], 'required': [('sendmailsftpfail', '=', True)]}"/>
-              <button name="test_sftp_connection" type="object" attrs="{'invisible': [('sftpwrite','=',False)]}" string="Test SFTP Connection" icon="gtk-network"/>
+              <field name="sftp_write"/>
+              <field name="sftp_host" 
+              attrs="{'invisible':[('sftp_write', '=', False)],'required':[('sftp_write', '=', True)]}"/>
+              <field name="sftp_port" attrs="{'invisible':[('sftp_write', '=', False)],'required':[('sftp_write', '=', True)]}"/>
+              <field name="sftp_user" attrs="{'invisible':[('sftp_write', '=', False)], 'required':[('sftp_write', '=', True)]}"/>
+              <field name="sftp_password" attrs="{'invisible':[('sftp_write', '=', False)],'required': [('sftp_write', '=', True)]}" password="True"/>
+              <field name="sftp_path" attrs="{'invisible':[('sftp_write', '==', False)],'required':[('sftp_write', '==', True)]}" placeholder="For example: /odoo/backups/"/>
+              <field name="days_to_keep_sftp" attrs="{'invisible': [('sftp_write', '=', False)], 'required': [('sftp_write', '=', True)]}"/>
+              <field name="send_mail_sftp_fail" attrs="{'invisible': [('sftp_write','=',False)]}"/>
+	      <field name="email_to_notify" attrs="{'invisible':['|',('send_mail_sftp_fail', '==', False), ('sftp_write', '=', False)], 'required': [('send_mail_sftp_fail', '=', True)]}"/>
+              <button name="test_sftp_connection" type="object" attrs="{'invisible': [('sftp_write','=',False)]}" string="Test SFTP Connection" icon="gtk-network"/>
             </group>
             <separator string="Help" colspan="2"/>
             <div>
@@ -70,9 +70,9 @@ background-repeat: no-repeat;background-position: 10px center;color: #9F6000;bac
 	  <field name='host'/>
 	  <field name='port'/>
 	  <field name='name'/>
-	  <field name='bkp_dir'/>
+	  <field name='folder'/>
 	  <field name="autoremove"/>
-	  <field name="sftpip"/>
+	  <field name="sftp_host"/>
 	</tree>
       </field>
     </record>
@@ -86,9 +86,9 @@ background-repeat: no-repeat;background-position: 10px center;color: #9F6000;bac
           <field name='host'/>
           <field name='port'/>
           <field name='name'/>
-          <field name='bkp_dir'/>
+          <field name='folder'/>
           <field name="autoremove"/>
-          <field name="sftpip"/>
+          <field name="sftp_host"/>
         </search>
       </field>
     </record>
