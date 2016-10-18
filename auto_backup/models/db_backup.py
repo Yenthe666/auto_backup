@@ -4,7 +4,7 @@
 #    OpenERP, Open Source Management Solution    
 #    Copyright (C) 2004-2009 Tiny SPRL (<http://tiny.be>). All Rights Reserved
 #    $Id$
-#
+#    <<Contributor>> : Ishwar Malvi - Geminate Consultancy Services (<http://geminatecs.com>)
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation, either version 3 of the License, or
@@ -81,10 +81,9 @@ class db_backup(models.Model):
     email_to_notify = fields.Char('E-mail to notify', help='Fill in the e-mail where you want to be notified that the backup failed on the FTP.')
     
     def _check_db_exist(self):
-        for record in self.browse(self):
-            db_list = self.get_db_list(self, record.host, record.port)
-            if record.name in db_list:
-                return True
+        db_list = self.get_db_list(self.host, self.port)
+        if self.name in db_list:
+            return True
         return False
     
     _constraints = [(_check_db_exist, _('Error ! No such database exists!'), [])]
@@ -97,7 +96,7 @@ class db_backup(models.Model):
         messageTitle = ""
         messageContent = ""
         for rec in confs:
-            db_list = self.get_db_list(cr, uid, [], rec.host, rec.port)
+            db_list = self.get_db_list(rec.host, rec.port)
             try:
                 pathToWriteTo = rec.sftp_path
                 ipHost = rec.sftpip
@@ -121,11 +120,10 @@ password=passwordLogin,port=portHost)
         else:
             raise osv.except_osv(_(messageTitle), _(messageContent))
 
-    def schedule_backup(self, cr, user, context={}):
-        conf_ids= self.search(cr, user, [])
-        confs = self.browse(cr,user,conf_ids)
-        for rec in confs:
-            db_list = self.get_db_list(cr, user, [], rec.host, rec.port)
+    def schedule_backup(self):
+        conf_ids= self.search([])
+        for rec in conf_ids:
+            db_list = self.get_db_list(rec.host, rec.port)
             if rec.name in db_list:
                 try:
                     if not os.path.isdir(rec.folder):
@@ -251,4 +249,5 @@ password=passwordLogin, port=portHost)
                         if os.path.isfile(fullpath) and ".dump" in f:
                             _logger.info("Delete local out-of-date file: " + fullpath)
                             os.remove(fullpath)
+
 
