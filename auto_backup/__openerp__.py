@@ -2,7 +2,7 @@
 {
     'name' : 'Database Auto-Backup',
     'version' : '9.0',
-    'author' : 'VanRoey.be - Yenthe Van Ginneken',
+    'author' : 'VanRoey.be - Yenthe Van Ginneken, GeminateCS.com - Ishwar Malvi',
     'website' : 'http://www.vanroey.be/applications/bedrijfsbeheer/odoo',
     'category' : 'Generic Modules',
     'summary': 'Backups',
