@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 {
     'name' : 'Database Auto-Backup',
-    'version' : '9.0',
+    'version' : '10.0',
     'author' : 'VanRoey.be - Yenthe Van Ginneken',
     'website' : 'http://www.vanroey.be/applications/bedrijfsbeheer/odoo',
     'category' : 'Generic Modules',
