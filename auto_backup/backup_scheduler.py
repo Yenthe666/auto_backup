@@ -32,14 +32,15 @@ import base64
 import re
 import logging
 
-try:
-    import pysftp
-except ImportError:
-    raise ImportError('This module needs pysftp to automaticly write backups to the FTP through SFTP. Please install pysftp on your system. (sudo pip install pysftp)')
 from openerp.osv import fields,osv,orm
 from openerp import tools, _
 
 _logger = logging.getLogger(__name__)
+
+try:
+    import pysftp
+except ImportError:
+    _logger.error('This module needs pysftp to automaticly write backups to the FTP through SFTP. Please install pysftp on your system. (sudo pip install pysftp)')
 
 def execute(connector, method, *args):
     res = False
