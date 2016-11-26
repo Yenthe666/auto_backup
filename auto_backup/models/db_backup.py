@@ -22,7 +22,10 @@
 
 import xmlrpclib
 import socket
+import requests
 import os
+import shutil
+import functools
 import time
 import datetime
 import base64
@@ -147,14 +150,23 @@ class db_backup(models.Model):
                 conn = xmlrpclib.ServerProxy(uri + '/xmlrpc/db')
                 bkp=''
                 try:
-                    bkp = execute(conn, 'dump', tools.config['admin_passwd'], rec.name, rec.backup_type)
+                    bkp_resp = requests.post(
+                        uri + '/web/database/backup', stream = True,
+                        data = {
+                            'master_pwd': tools.config['admin_passwd'],
+                            'name': rec.name,
+                            'backup_format': rec.backup_type
+                        }
+                    )
+                    bkp_resp.raise_for_status()
                 except:
                     _logger.debug("Couldn't backup database %s. Bad database administrator password for server running at http://%s:%s" %(rec.name, rec.host, rec.port))
                     continue
-                bkp = base64.decodestring(bkp)
-                fp = open(file_path,'wb')
-                fp.write(bkp)
-                fp.close()
+                with open(file_path,'wb') as fp:
+                    # see https://github.com/kennethreitz/requests/issues/2155
+                    bkp_resp.raw.read = functools.partial(
+                        bkp_resp.raw.read, decode_content=True)
+                    shutil.copyfileobj(bkp_resp.raw, fp)
             else:
                 _logger.debug("database %s doesn't exist on http://%s:%s" %(rec.name, rec.host, rec.port))
 
