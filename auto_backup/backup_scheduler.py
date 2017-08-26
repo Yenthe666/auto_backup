@@ -242,7 +242,7 @@ password=passwordLogin, port=portHost)
                         #If the file is older than the daystokeepsftp (the days to keep that the user filled in on the Odoo form it will be removed.
                         if delta.days >= rec.daystokeepsftp:
                             #Only delete files, no directories!
-                            if srv.isfile(fullpath) and ".dump" in file:
+                            if srv.isfile(fullpath) and ".dump" in file or ".zip" in file:
                                 _logger.info("Delete too old file from SFTP servers: " + file)
                                 srv.unlink(file)
                     #Close the SFTP session.
