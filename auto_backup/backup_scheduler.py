@@ -278,7 +278,7 @@ password=passwordLogin, port=portHost)
                     delta  = now - createtime
                     if delta.days >= rec.daystokeep:
                         #Only delete files (which are .dump), no directories.
-                        if os.path.isfile(fullpath) and ".dump" in f:
+                        if os.path.isfile(fullpath) and ".dump" in f or ".zip" in f:
                             _logger.info("Delete local out-of-date file: " + fullpath)
                             os.remove(fullpath)
 
