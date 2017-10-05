@@ -19,8 +19,8 @@ def execute(connector, method, *args):
     res = False
     try:
         res = getattr(connector, method)(*args)
-    except socket.error,e:
-        _logger.critical('Error while executing the method "execute". Error: ' + str(e))
+    except socket.error as error:
+        _logger.critical('Error while executing the method "execute". Error: ' + str(error))
         raise e
     return res
 
