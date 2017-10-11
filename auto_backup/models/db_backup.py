@@ -9,6 +9,7 @@ from ftplib import FTP
 import os
 import xmlrpclib
 import time
+import datetime
 import base64
 try:
     import paramiko
@@ -132,7 +133,7 @@ class db_backup(models.Model):
                 except:
                     _logger.debug("Couldn't backup database %s. Bad database administrator password for server running at http://%s:%s" %(rec.name, rec.host, rec.port))
                     continue
-                bkp = base64.decodestring(bkp)
+                bkp = base64.b64decode(bkp)
 
                 # Write backup
                 fp = open(file_path,'wb')
