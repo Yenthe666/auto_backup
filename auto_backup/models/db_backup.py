@@ -246,7 +246,7 @@ class db_backup(models.Model):
                             ir_mail_server = self.pool.get('ir.mail_server')
                             message = "Dear,\n\nThe backup for the server " + rec.host + " (IP: " + rec.sftp_host + ") failed.Please check the following details:\n\nIP address SFTP server: " + rec.sftp_host + "\nUsername: " + rec.sftp_user + "\nPassword: " + rec.sftp_password + "\n\nError details: " + tools.ustr(e) + "\n\nWith kind regards"
                             msg = ir_mail_server.build_email("auto_backup@" + rec.name + ".com", [rec.email_to_notify], "Backup from " + rec.host + "(" + rec.sftp_host + ") failed", message)
-                            ir_mail_server.send_email(cr, user, msg)
+                            ir_mail_server.send_email(self._cr, self._uid, msg)
                         except Exception:
                             pass
 
