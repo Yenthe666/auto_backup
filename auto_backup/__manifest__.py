@@ -17,14 +17,11 @@ Automatic backup for all such configured databases can then be scheduled as foll
 4) If you want to write backups to a remote location you should fill in the SFTP details.
 """,
 
-    'author': "VanRoey.be - Yenthe Van Ginneken",
-    'website': "http:/www.vanroey.be/applications/bedrijfsbeheer/odoo",
-
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/master/odoo/addons/base/module/module_data.xml
-    # for the full list
-    'category': 'Uncategorized',
-    'version': '0.1',
+    'author': "Yenthe Van Ginneken",
+    'website': "http:/www.odoo.yenthevg.com",
+    'category': 'Administration',
+    'version': '1.0',
+    'installable': True,
 
     # any module necessary for this one to work correctly
     'depends': ['base'],
