@@ -40,13 +40,13 @@ background-repeat: no-repeat;background-position: 10px center;color: #9F6000;bac
                                attrs="{'invisible':[('sftp_write', '=', False)],'required': [('sftp_write', '=', True)]}"
                                password="True"/>
                         <field name="sftp_path"
-                               attrs="{'invisible':[('sftp_write', '==', False)],'required':[('sftp_write', '==', True)]}"
+                               attrs="{'invisible':[('sftp_write', '=', False)],'required':[('sftp_write', '=', True)]}"
                                placeholder="For example: /odoo/backups/"/>
                         <field name="days_to_keep_sftp"
                                attrs="{'invisible': [('sftp_write', '=', False)], 'required': [('sftp_write', '=', True)]}"/>
                         <field name="send_mail_sftp_fail" attrs="{'invisible': [('sftp_write','=',False)]}"/>
                         <field name="email_to_notify"
-                               attrs="{'invisible':['|',('send_mail_sftp_fail', '==', False), ('sftp_write', '=', False)], 'required': [('send_mail_sftp_fail', '=', True)]}"/>
+                               attrs="{'invisible':['|',('send_mail_sftp_fail', '=', False), ('sftp_write', '=', False)], 'required': [('send_mail_sftp_fail', '=', True)]}"/>
                         <button name="test_sftp_connection" type="object"
                                 attrs="{'invisible': [('sftp_write','=',False)]}" string="Test SFTP Connection"
                                 icon="gtk-network"/>

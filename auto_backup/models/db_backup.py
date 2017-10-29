@@ -20,7 +20,7 @@ try:
     import paramiko
 except ImportError:
     raise ImportError(
-        'This module needs paramiko to automatically write backups to the FTP through SFTP. Please install paramiko on your system. (sudo pip install paramiko)')
+        'This module needs paramiko to automatically write backups to the FTP through SFTP. Please install paramiko on your system. (sudo pip3 install paramiko)')
 
 
 def execute(connector, method, *args):
@@ -49,11 +49,11 @@ class db_backup(models.Model):
         return dbName
 
     # Columns for local server configuration
-    host = fields.Char('Host', size=100, required=True, default='localhost')
-    port = fields.Char('Port', size=10, required=True, default=8069)
-    name = fields.Char('Database', size=100, required=True, help='Database you want to schedule backups for',
+    host = fields.Char('Host', required=True, default='localhost')
+    port = fields.Char('Port', required=True, default=8069)
+    name = fields.Char('Database', required=True, help='Database you want to schedule backups for',
                        default=_get_db_name)
-    folder = fields.Char('Backup Directory', size=100, help='Absolute path for storing the backups', required='True',
+    folder = fields.Char('Backup Directory', help='Absolute path for storing the backups', required='True',
                          default='/odoo/backups')
     backup_type = fields.Selection([('zip', 'Zip'), ('dump', 'Dump')], 'Backup Type', required=True, default='zip')
     autoremove = fields.Boolean('Auto. Remove Backups',
@@ -101,6 +101,7 @@ class db_backup(models.Model):
         messageTitle = ""
         messageContent = ""
         error = ""
+        has_failed = False
 
         for rec in self:
             db_list = self.get_db_list(rec.host, rec.port)
@@ -116,22 +117,23 @@ class db_backup(models.Model):
                 s.set_missing_host_key_policy(paramiko.AutoAddPolicy())
                 s.connect(ipHost, 22, usernameLogin, passwordLogin, timeout=10)
                 sftp = s.open_sftp()
-                messageTitle = "Connection Test Succeeded!\nEverything seems properly set up for FTP back-ups!"
+                messageTitle = _("Connection Test Succeeded!\nEverything seems properly set up for FTP back-ups!")
             except Exception as e:
                 _logger.critical('There was a problem connecting to the remote ftp: ' + str(e))
                 error += str(e)
-                messageTitle = "Connection Test Failed!"
+                has_failed = True
+                messageTitle = _("Connection Test Failed!")
                 if len(rec.sftp_host) < 8:
                     messageContent += "\nYour IP address seems to be too short.\n"
-                messageContent += "Here is what we got instead:\n"
+                messageContent += _("Here is what we got instead:\n")
             finally:
                 if s:
                     s.close()
 
-        if "Failed" in messageTitle:
-            raise Warning(_(messageTitle + '\n\n' + messageContent + "%s") % str(error))
+        if has_failed:
+            raise Warning(messageTitle + '\n\n' + messageContent + "%s" % str(error))
         else:
-            raise Warning(_(messageTitle + '\n\n' + messageContent))
+            raise Warning(messageTitle + '\n\n' + messageContent)
 
     @api.model
     def schedule_backup(self):
