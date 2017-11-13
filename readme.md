@@ -1,6 +1,10 @@
 ## 1. Prerequisites
 This module needs the Python library pysftp, otherwise it cannot be installed and used. Install pysftp through the command <code>sudo pip install pysftp</code>
 
+Change default value of limit_time_real(120s) param in odoo configuration file(e.g /etc/odoo/openerp.conf) to the appropriate in case of large database backup. This is required when max_cron_threads > 0 to avoid worker timeout during backup. 
+
+<code>limit_time_real = 600 (10 min) </code>
+
 ## 2. Which version to choose?
 Version 10.0 is the stable version for this module and is compatible with the latest Odoo version (Odoo 10).
 The versions 8.0 and 9.0 of this module are tested and verified to work for their specific Odoo versions. The master version is the development version and will be for the next Odoo version.
