@@ -15,6 +15,7 @@ except ImportError:
     import xmlrpclib
 import time
 import base64
+import socket
 
 try:
     import paramiko
@@ -29,7 +30,7 @@ def execute(connector, method, *args):
         res = getattr(connector, method)(*args)
     except socket.error as error:
         _logger.critical('Error while executing the method "execute". Error: ' + str(error))
-        raise e
+        raise error
     return res
 
 
