@@ -1,5 +1,5 @@
 ## 1. Prerequisites
-This module needs the Python library pysftp, otherwise it cannot be installed and used. Install pysftp through the command <code>sudo pip install pysftp</code>
+This module needs the Python library pysftp, otherwise it cannot be installed and used. Install pysftp through the command <code>sudo easy_install pysftp</code>. This ensures all dependencies are met to make use of this module.
 
 ## 2. Which version to choose?
 Version 10.0 is the stable version for this module and is compatible with the latest Odoo version (Odoo 10).
@@ -17,6 +17,9 @@ When you've configured your Odoo instance to run with workers you should change 
 
 ### 4.2 `list_db` parameter
 The backup module will only work when `list_db` is set to `True` (or is not configured). If `list_db` is set to `False` the Odoo instance will block looking for the databases and the module will fail. Make sure it is always on (or script a workaround).
+
+### 4.3 location of local odoo backups
+Odoo makes use of a user 'odoo' that has no home directory like a regular user. If you would <code>sudo finger odoo</code> you would notice it had a home directory under <code>/var/lib/odoo</code>. This location is writeable for your backups. If you're planning to write your backups on another location, you need to ensure that chosen location is accessible and writeable by the odoo user.
 
 ## 5. Bugs or problems
 Please post them here under 'Issues' and I will get back to you as soon as I can!
