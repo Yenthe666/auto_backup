@@ -2,6 +2,8 @@
 
 from odoo import models, fields, api, tools, _
 from odoo.exceptions import Warning
+import odoo
+from odoo.http import content_disposition
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -16,6 +18,7 @@ except ImportError:
 import time
 import base64
 import socket
+
 
 try:
     import paramiko
@@ -156,18 +159,17 @@ class db_backup(models.Model):
                 conn = xmlrpclib.ServerProxy(uri + '/xmlrpc/db')
                 bkp = ''
                 try:
-                    bkp = execute(conn, 'dump', tools.config['admin_passwd'], rec.name, rec.backup_type)
-                except:
+                    # try to backup database and write it away
+                    fp = open(file_path, 'wb')
+                    odoo.service.db.dump_db(rec.name, fp, rec.backup_type)
+                    fp.close()
+                except Exception as error:
                     _logger.debug(
                         "Couldn't backup database %s. Bad database administrator password for server running at http://%s:%s" % (
                         rec.name, rec.host, rec.port))
+                    _logger.debug("Exact error from the exception: " + str(error))
                     continue
-                bkp = base64.b64decode(bkp.encode('ascii'))
 
-                # Write backup
-                fp = open(file_path, 'wb')
-                fp.write(bkp)
-                fp.close()
             else:
                 _logger.debug("database %s doesn't exist on http://%s:%s" % (rec.name, rec.host, rec.port))
 
