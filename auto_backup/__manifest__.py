@@ -22,6 +22,7 @@ Automatic backup for all such configured databases can then be scheduled as foll
     'category': 'Administration',
     'version': '1.0',
     'installable': True,
+    'license': 'LGPL-3',
 
     # any module necessary for this one to work correctly
     'depends': ['base'],
