@@ -1,0 +1,395 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* auto_backup
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0-20180205\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-02-08 03:22+0000\n"
+"PO-Revision-Date: 2018-02-08 12:47+0900\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 2.0.6\n"
+"Last-Translator: \n"
+"Language: ko_KR\n"
+
+#. module: auto_backup
+#: model:ir.ui.view,arch_db:auto_backup.view_backup_config_form
+msgid ""
+"<b>Warning:</b>\n"
+"                        Use SFTP with caution! This writes files to external "
+"servers under the path you specify."
+msgstr ""
+"<b>경고:</b>\n"
+"                        조심해서 SFTP를 사용하세요! 이것은 당신이 지정한 경로"
+"밑에 외부서버들로 파일들을 쓰게됩니다."
+
+#. module: auto_backup
+#: model:ir.model.fields,help:auto_backup.field_db_backup_folder
+msgid "Absolute path for storing the backups"
+msgstr "백업저장용 절대경로명"
+
+#. module: auto_backup
+#: model:ir.module.category,name:auto_backup.module_management
+msgid "Auto backup access"
+msgstr "자동으로 백업 액세스하기"
+
+#. module: auto_backup
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup_send_mail_sftp_fail
+msgid "Auto. E-mail on backup fail"
+msgstr "백업실패시에 이메일로 알려주기 (자동)"
+
+#. module: auto_backup
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup_autoremove
+msgid "Auto. Remove Backups"
+msgstr "백업제거하기 (자동)"
+
+#. module: auto_backup
+#: model:ir.ui.view,arch_db:auto_backup.view_backup_config_form
+msgid "Back-up view"
+msgstr "백업보기"
+
+#. module: auto_backup
+#: model:ir.ui.menu,name:auto_backup.auto_backup_menu
+msgid "Back-ups"
+msgstr "백업"
+
+#. module: auto_backup
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup_folder
+msgid "Backup Directory"
+msgstr "백업디렉토리"
+
+#. module: auto_backup
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup_backup_type
+msgid "Backup Type"
+msgstr "백업타입"
+
+#. module: auto_backup
+#: model:ir.actions.server,name:auto_backup.backup_scheduler_ir_actions_server
+#: model:ir.cron,cron_name:auto_backup.backup_scheduler
+#: model:ir.cron,name:auto_backup.backup_scheduler
+msgid "Backup scheduler"
+msgstr "백업스케줄러"
+
+#. module: auto_backup
+#: model:ir.ui.view,arch_db:auto_backup.view_backup_config_tree
+msgid "Backups"
+msgstr "백업"
+
+#. module: auto_backup
+#: model:ir.model.fields,help:auto_backup.field_db_backup_days_to_keep_sftp
+msgid ""
+"Choose after how many days the backup should be deleted from the FTP server. "
+"For example:\n"
+"If you fill in 5 the backups will be removed after 5 days from the FTP "
+"server."
+msgstr ""
+"FTP서버로부터 몇일지난 백업본을 삭제할지 선택하세요. 예를들면:\n"
+"만약 5를 기입하면 그 백업본들은 FTP서버에서 5일후에 삭제됩니다."
+
+#. module: auto_backup
+#: model:ir.model.fields,help:auto_backup.field_db_backup_days_to_keep
+msgid ""
+"Choose after how many days the backup should be deleted. For example:\n"
+"If you fill in 5 the backups will be removed after 5 days."
+msgstr ""
+"FTP서버로부터 몇일지난 백업본을 삭제할지 선택하세요. 예를들면:\n"
+"만약 5를 기입하면 그 백업본들은 FTP서버에서 5일후에 삭제됩니다."
+
+#. module: auto_backup
+#: model:ir.actions.act_window,name:auto_backup.action_backup
+#: model:ir.ui.menu,name:auto_backup.backup_conf_menu
+msgid "Configure back-ups"
+msgstr "백업구성하기"
+
+#. module: auto_backup
+#: code:addons/auto_backup/models/db_backup.py:129
+#, python-format
+msgid "Connection Test Failed!"
+msgstr "연결테스트실패~"
+
+#. module: auto_backup
+#: code:addons/auto_backup/models/db_backup.py:124
+#, python-format
+msgid ""
+"Connection Test Succeeded!\n"
+"Everything seems properly set up for FTP back-ups!"
+msgstr ""
+"연결테스트성공!\n"
+"모든게 적절히 세팅된거 같습니다!"
+
+#. module: auto_backup
+#: model:ir.ui.view,arch_db:auto_backup.view_backup_config_form
+msgid "Contact me!"
+msgstr "저에게 연락하세요~"
+
+#. module: auto_backup
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup_create_uid
+msgid "Created by"
+msgstr "생성됨"
+
+#. module: auto_backup
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup_create_date
+msgid "Created on"
+msgstr "생성됨"
+
+#. module: auto_backup
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup_name
+msgid "Database"
+msgstr "데이터베이스"
+
+#. module: auto_backup
+#: model:ir.model.fields,help:auto_backup.field_db_backup_name
+msgid "Database you want to schedule backups for"
+msgstr "백업을 스케줄하기 원하는 데이터베이스"
+
+#. module: auto_backup
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup_display_name
+msgid "Display Name"
+msgstr "표시이름"
+
+#. module: auto_backup
+#: selection:db.backup,backup_type:0
+msgid "Dump"
+msgstr "덤프"
+
+#. module: auto_backup
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup_email_to_notify
+msgid "E-mail to notify"
+msgstr "통보할 이메일주소"
+
+#. module: auto_backup
+#: code:addons/auto_backup/models/db_backup.py:98 constraint:db.backup:0
+#, python-format
+msgid "Error ! No such database exists!"
+msgstr "에러~ 그런 데이터베이스가 존재하지 않습니다"
+
+#. module: auto_backup
+#: model:ir.model.fields,help:auto_backup.field_db_backup_email_to_notify
+msgid ""
+"Fill in the e-mail where you want to be notified that the backup failed on "
+"the FTP."
+msgstr "FTP서버상에서 백업실패할때 알림받기원하는 이메일주소를 채워넣으세요"
+
+#. module: auto_backup
+#: model:ir.ui.view,arch_db:auto_backup.view_backup_config_form
+msgid "For example: /odoo/backups/"
+msgstr "예: /odoo/backups/"
+
+#. module: auto_backup
+#: model:ir.ui.view,arch_db:auto_backup.view_backup_config_form
+msgid "Go to Settings / Technical / Automation / Scheduled Actions."
+msgstr "Settings / Technical / Automation / Scheduled Actions 으로 가세요."
+
+#. module: auto_backup
+#: model:ir.ui.view,arch_db:auto_backup.view_backup_config_form
+msgid "Help"
+msgstr "도움말"
+
+#. module: auto_backup
+#: code:addons/auto_backup/models/db_backup.py:132
+#, python-format
+msgid "Here is what we got instead:\n"
+msgstr "우리가 대신하는것이 여기있습니다:\n"
+
+#. module: auto_backup
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup_host
+msgid "Host"
+msgstr "호스트"
+
+#. module: auto_backup
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup_id
+msgid "ID"
+msgstr "ID"
+
+#. module: auto_backup
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup_sftp_host
+msgid "IP Address SFTP Server"
+msgstr "SFTP서버 IP주소"
+
+#. module: auto_backup
+#: model:ir.model.fields,help:auto_backup.field_db_backup_send_mail_sftp_fail
+msgid ""
+"If you check this option you can choose to automaticly get e-mailed when the "
+"backup to the external server failed."
+msgstr ""
+"이 옵션을 체크하면 외부서버에서 백업실패할때 자동적으로 이메일하도록 선택할 "
+"수 있습니다."
+
+#. module: auto_backup
+#: model:ir.model.fields,help:auto_backup.field_db_backup_autoremove
+msgid ""
+"If you check this option you can choose to automaticly remove the backup "
+"after xx days"
+msgstr ""
+"이 옵션을 선택하면 자동적으로 며칠(xx days)후에 백업을 제거하도록 선택할 수 "
+"있습니다"
+
+#. module: auto_backup
+#: model:ir.model.fields,help:auto_backup.field_db_backup_sftp_write
+msgid ""
+"If you check this option you can specify the details needed to write to a "
+"remote server with SFTP."
+msgstr ""
+"이 옵션을 선택하면 SFTP 원격서버로 쓰려고 할때 요구되는 정보를 지정할 수 있습"
+"니다."
+
+#. module: auto_backup
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup___last_update
+msgid "Last Modified on"
+msgstr "최근수정일자"
+
+#. module: auto_backup
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup_write_uid
+msgid "Last Updated by"
+msgstr "최근수정자"
+
+#. module: auto_backup
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup_write_date
+msgid "Last Updated on"
+msgstr "최근업데이트일자"
+
+#. module: auto_backup
+#: model:ir.ui.view,arch_db:auto_backup.view_backup_config_form
+msgid "Local backup configuration"
+msgstr "로컬백업환경설정"
+
+#. module: auto_backup
+#: model:res.groups,name:auto_backup.group_manager
+msgid "Manager"
+msgstr "관리자"
+
+#. module: auto_backup
+#: model:ir.ui.view,arch_db:auto_backup.view_backup_config_form
+msgid "Need more help?"
+msgstr "더 도움이 필요하세요?"
+
+#. module: auto_backup
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup_sftp_password
+msgid "Password User SFTP Server"
+msgstr "SFTP서버 사용자 패스워드"
+
+#. module: auto_backup
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup_sftp_path
+msgid "Path external server"
+msgstr "외부서버경로"
+
+#. module: auto_backup
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup_port
+msgid "Port"
+msgstr "포트"
+
+#. module: auto_backup
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup_days_to_keep_sftp
+msgid "Remove SFTP after x days"
+msgstr "몇일후에 SFTP 제거"
+
+#. module: auto_backup
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup_days_to_keep
+msgid "Remove after x days"
+msgstr "몇일후에 제거하기"
+
+#. module: auto_backup
+#: model:ir.ui.view,arch_db:auto_backup.view_backup_config_form
+msgid "SFTP"
+msgstr "SFTP"
+
+#. module: auto_backup
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup_sftp_port
+msgid "SFTP Port"
+msgstr "SFTP 포트"
+
+#. module: auto_backup
+#: model:ir.ui.view,arch_db:auto_backup.view_backup_config_form
+msgid "Search the action named 'Backup scheduler'."
+msgstr "'백업스케줄러'라고 명명된 액션을 검색하세요"
+
+#. module: auto_backup
+#: model:ir.ui.view,arch_db:auto_backup.view_backup_config_form
+msgid ""
+"Set the scheduler to active and fill in how often you want backups generated."
+msgstr "스케줄러를 활성화로 세팅하고 백업주기를 채워넣으세요"
+
+#. module: auto_backup
+#: model:ir.ui.view,arch_db:auto_backup.view_backup_config_form
+msgid "Test SFTP Connection"
+msgstr "SFTP연결테스트"
+
+#. module: auto_backup
+#: model:ir.model.fields,help:auto_backup.field_db_backup_sftp_host
+msgid "The IP address from your remote server. For example 192.168.0.1"
+msgstr "원격서버로부터의 IP주소. 예를들자면, 192.168.0.1"
+
+#. module: auto_backup
+#: model:ir.model.fields,help:auto_backup.field_db_backup_sftp_path
+msgid ""
+"The location to the folder where the dumps should be written to. For "
+"example /odoo/backups/.\n"
+"Files will then be written to /odoo/backups/ on your remote server."
+msgstr ""
+"덤프파일이 씌어져야하는 폴더위치. 예를들어보자면 /odoo/backups/.\n"
+"그 다음에 파일들은 당신서버상의 /odoo/backups/ 로 쓰여질겁니다."
+
+#. module: auto_backup
+#: model:ir.model.fields,help:auto_backup.field_db_backup_sftp_password
+msgid ""
+"The password from the user where the SFTP connection should be made with. "
+"This is the password from the user on the external server."
+msgstr ""
+"SFTP연결이 만들어져야하는 그 사용자의 비밀번호. 이것은 외부서버상의 그 사용자"
+"의 비밀번호예요~"
+
+#. module: auto_backup
+#: model:ir.model.fields,help:auto_backup.field_db_backup_sftp_port
+msgid "The port on the FTP server that accepts SSH/SFTP calls."
+msgstr "SSH/SFTP접속을 허용하는 FTP서버상의 포트"
+
+#. module: auto_backup
+#: model:ir.model.fields,help:auto_backup.field_db_backup_sftp_user
+msgid ""
+"The username where the SFTP connection should be made with. This is the user "
+"on the external server."
+msgstr "SFTP연결할 사용자명. 외부서버상의 사용자명이예요~ "
+
+#. module: auto_backup
+#: model:ir.ui.view,arch_db:auto_backup.view_backup_config_form
+msgid ""
+"This configures the scheduler for automatic backup of the given database "
+"running on given host\n"
+"                        at given port on regular intervals.\n"
+"                        <br/>\n"
+"                        Automatic backups of the database can be scheduled "
+"as follows:"
+msgstr ""
+"이것은 정기적인 간격으로 해당 호스트상에서 실행중인 데이터베이스의 자동백업용"
+"으로 스케줄러를 구성합니다. 그 데이터베이스의 자동백업들은 아래처럼 스케줄될 "
+"수 있습니다:"
+
+#. module: auto_backup
+#: model:ir.module.category,description:auto_backup.module_management
+msgid "User access level for this module"
+msgstr "이 모듈용 사용자접근레벨"
+
+#. module: auto_backup
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup_sftp_user
+msgid "Username SFTP Server"
+msgstr "SFTP서버 사용자명"
+
+#. module: auto_backup
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup_sftp_write
+msgid "Write to external server with sftp"
+msgstr "sftp와 함께 외부서버로 쓰기"
+
+#. module: auto_backup
+#: selection:db.backup,backup_type:0
+msgid "Zip"
+msgstr "Zip"
+
+#. module: auto_backup
+#: model:ir.model,name:auto_backup.model_db_backup
+msgid "db.backup"
+msgstr "db.backup"
