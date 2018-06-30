@@ -119,7 +119,7 @@ class db_backup(models.Model):
             try:
                 s = paramiko.SSHClient()
                 s.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-                s.connect(ipHost, 22, usernameLogin, passwordLogin, timeout=10)
+                s.connect(ipHost, portHost, usernameLogin, passwordLogin, timeout=10)
                 sftp = s.open_sftp()
                 messageTitle = _("Connection Test Succeeded!\nEverything seems properly set up for FTP back-ups!")
             except Exception as e:
@@ -188,7 +188,7 @@ class db_backup(models.Model):
                     try:
                         s = paramiko.SSHClient()
                         s.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-                        s.connect(ipHost, 22, usernameLogin, passwordLogin, timeout=20)
+                        s.connect(ipHost, portHost, usernameLogin, passwordLogin, timeout=20)
                         sftp = s.open_sftp()
                     except Exception as error:
                         _logger.critical('Error connecting to remote server! Error: ' + str(error))
