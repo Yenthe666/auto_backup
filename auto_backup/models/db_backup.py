@@ -39,6 +39,7 @@ def execute(connector, method, *args):
 
 class db_backup(models.Model):
     _name = 'db.backup'
+    _description = 'Database Auto-Backup'
 
     @api.multi
     def get_db_list(self, host, port, context={}):
@@ -274,7 +275,7 @@ class db_backup(models.Model):
                 # Loop over all files in the directory.
                 for f in os.listdir(dir):
                     fullpath = os.path.join(dir, f)
-                    # Only delete the ones wich are from the current database 
+                    # Only delete the ones wich are from the current database
                     # (Makes it possible to save different databases in the same folder)
                     if rec.name in fullpath:
                         timestamp = os.stat(fullpath).st_ctime
