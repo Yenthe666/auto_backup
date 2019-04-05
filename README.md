@@ -18,8 +18,8 @@ When you've configured your Odoo instance to run with workers you should change 
 ### 4.2 `list_db` parameter
 The backup module will only work when `list_db` is set to `True` (or is not configured). If `list_db` is set to `False` the Odoo instance will block looking for the databases and the module will fail. Make sure it is always on (or script a workaround).
 
-### 4.3 `--load` parameter
-In V12 Odoo will need the values 'base' and 'web' set if you use the `--load` parameter. Without these values set you will get a 404 NOT FOUND from the backup module.
+### 4.3 `--load` / `server_wide_modules` parameter
+In V12 Odoo will need the values 'base' and 'web' set if you use the `--load` (or `server_wide_modules`) parameter. Without these values set you will get a 404 NOT FOUND from the backup module.
 For more information see https://github.com/Yenthe666/auto_backup/issues/122
 
 ## 5. Bugs or problems
