@@ -20,7 +20,7 @@ Automatic backup for all such configured databases can then be scheduled as foll
     'author': "Yenthe Van Ginneken",
     'website': "http:/www.odoo.yenthevg.com",
     'category': 'Administration',
-    'version': '12.0.0.1',
+    'version': '13.0.0.1',
     'installable': True,
     'license': 'LGPL-3',
 
