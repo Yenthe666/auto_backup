@@ -1,14 +1,14 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* auto_backup
+# 	* auto_backup
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 8.0\n"
+"Project-Id-Version: Odoo Server 13.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-26 14:17+0000\n"
-"PO-Revision-Date: 2015-03-26 14:17+0000\n"
-"Last-Translator: <>\n"
+"POT-Creation-Date: 2019-10-20 13:29+0000\n"
+"PO-Revision-Date: 2019-10-20 13:29+0000\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -16,277 +16,366 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: auto_backup
-#: code:addons/auto_backup/backup_scheduler.py:137
-#, python-format
-msgid "%s"
-msgstr "%s"
+#: model_terms:ir.ui.view,arch_db:auto_backup.view_backup_config_form
+msgid ""
+"<b>Warning:</b>\n"
+"                        Use SFTP with caution! This writes files to external servers under the path you specify."
+msgstr ""
+"<b>Waarschuwing:</b>\n"
+"                        Gebruik SFTP voorzichtig! Dit schrijft bestanden naar externe servers onder het pad dat u opgeeft."
 
 #. module: auto_backup
-#: help:db.backup,bkp_dir:0
+#: model:ir.model.fields,help:auto_backup.field_db_backup__folder
 msgid "Absolute path for storing the backups"
 msgstr "Absoluut pad om backups te bewaren"
 
 #. module: auto_backup
-#: field:db.backup,sendmailsftpfail:0
+#: model:ir.module.category,name:auto_backup.module_management
+msgid "Auto backup access"
+msgstr "Auto backup toegang"
+
+#. module: auto_backup
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup__send_mail_sftp_fail
 msgid "Auto. E-mail on backup fail"
+msgstr ""
+
+#. module: auto_backup
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup__autoremove
+msgid "Auto. Remove Backups"
 msgstr "Auto. e-mailen wanneer backup mislukt"
 
 #. module: auto_backup
-#: field:db.backup,autoremove:0
-msgid "Auto. Remove Backups"
-msgstr "Auto. backups verwijderen"
+#: model_terms:ir.ui.view,arch_db:auto_backup.view_backup_config_form
+msgid "Back-up view"
+msgstr "Back-up weergave"
 
 #. module: auto_backup
-#: view:db.backup:auto_backup.view_backup_conf_form
-msgid "Automatic backups of the database can be scheduled as follows:"
-msgstr "Automatische backups van de database kunnen als volgend gepland worden:"
+#: model:ir.ui.menu,name:auto_backup.auto_backup_menu
+msgid "Back-ups"
+msgstr "Back-ups"
 
 #. module: auto_backup
-#: field:db.backup,bkp_dir:0
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup__folder
 msgid "Backup Directory"
 msgstr "Backup folder"
 
 #. module: auto_backup
-#: view:db.backup:auto_backup.view_backup_conf_tree
-msgid "Backups"
-msgstr "Backups"
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup__backup_type
+msgid "Backup Type"
+msgstr "Soort back-up"
 
 #. module: auto_backup
-#: help:db.backup,daystokeepsftp:0
-msgid "Choose after how many days the backup should be deleted from the FTP server. For example:\n"
+#: model:ir.model,name:auto_backup.model_db_backup
+msgid "Backup configuration record"
+msgstr "Back-up configuratie"
+
+#. module: auto_backup
+#: model:ir.actions.server,name:auto_backup.backup_scheduler_ir_actions_server
+#: model:ir.cron,cron_name:auto_backup.backup_scheduler
+#: model:ir.cron,name:auto_backup.backup_scheduler
+msgid "Backup scheduler"
+msgstr "Backup planner"
+
+#. module: auto_backup
+#: model_terms:ir.ui.view,arch_db:auto_backup.view_backup_config_tree
+msgid "Backups"
+msgstr "Back-ups"
+
+#. module: auto_backup
+#: model:ir.model.fields,help:auto_backup.field_db_backup__days_to_keep_sftp
+msgid ""
+"Choose after how many days the backup should be deleted from the FTP server. For example:\n"
 "If you fill in 5 the backups will be removed after 5 days from the FTP server."
+msgstr ""
+
+#. module: auto_backup
+#: model:ir.model.fields,help:auto_backup.field_db_backup__days_to_keep
+msgid ""
+"Choose after how many days the backup should be deleted. For example:\n"
+"If you fill in 5 the backups will be removed after 5 days."
 msgstr "Kies na hoeveel dagen de backups verwijderd moeten worden van de FTP server. Bijvoorbeeld:\n"
 "Als u 5 invult zal de backup na 5 dagen verwijderd worden van de FTP server."
 
 #. module: auto_backup
-#: help:db.backup,daystokeep:0
-msgid "Choose after how many days the backup should be deleted. For example:\n"
-"If you fill in 5 the backups will be removed after 5 days."
-msgstr "Kies na hoeveel dagen de backup verwijderd moet worden. Bijvoorbeeld:\n"
-"Als u 5 invult zal de backup verwijderd worden na 5 dagen."
-
-#. module: auto_backup
-#: model:ir.actions.act_window,name:auto_backup.action_backup_conf_form
+#: model:ir.actions.act_window,name:auto_backup.action_backup
 #: model:ir.ui.menu,name:auto_backup.backup_conf_menu
-msgid "Configure Backup"
-msgstr "Configureer backup"
+msgid "Configure back-ups"
+msgstr "Configureer back-ups"
 
 #. module: auto_backup
-#: view:db.backup:auto_backup.view_backup_conf_form
-msgid "Contact us!"
-msgstr "Contacteer ons!"
+#: code:addons/auto_backup/models/db_backup.py:0
+#, python-format
+msgid "Connection Test Failed!"
+msgstr "Connectie test mislukt!"
 
 #. module: auto_backup
-#: field:db.backup,create_uid:0
+#: code:addons/auto_backup/models/db_backup.py:0
+#, python-format
+msgid ""
+"Connection Test Succeeded!\n"
+"Everything seems properly set up for FTP back-ups!"
+msgstr ""
+"Connection Test Succeeded!\n"
+"Alles lijkt correct opgezet voor FTP backups!"
+
+#. module: auto_backup
+#: model_terms:ir.ui.view,arch_db:auto_backup.view_backup_config_form
+msgid "Contact me!"
+msgstr "Contacteer mij!"
+
+#. module: auto_backup
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup__create_uid
 msgid "Created by"
-msgstr "Gemaakt door"
+msgstr "Aangemaakt door"
 
 #. module: auto_backup
-#: field:db.backup,create_date:0
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup__create_date
 msgid "Created on"
-msgstr "Gemaakt op"
+msgstr "Aangemaakt op"
 
 #. module: auto_backup
-#: field:db.backup,name:0
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup__name
 msgid "Database"
 msgstr "Database"
 
 #. module: auto_backup
-#: help:db.backup,name:0
+#: model:ir.model.fields,help:auto_backup.field_db_backup__name
 msgid "Database you want to schedule backups for"
-msgstr "Database waar u backups voor wilt plannen"
+msgstr "Dataabse waar u back-ups voor wilt plannen"
 
 #. module: auto_backup
-#: field:db.backup,emailtonotify:0
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup__display_name
+msgid "Display Name"
+msgstr "Schermnaam"
+
+#. module: auto_backup
+#: model:ir.model.fields.selection,name:auto_backup.selection__db_backup__backup_type__dump
+msgid "Dump"
+msgstr ""
+
+#. module: auto_backup
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup__email_to_notify
 msgid "E-mail to notify"
 msgstr "E-mail om te verwittigen"
 
 #. module: auto_backup
-#: code:addons/auto_backup/backup_scheduler.py:106
-#: constraint:db.backup:0
+#: code:addons/auto_backup/models/db_backup.py:0
 #, python-format
 msgid "Error ! No such database exists!"
-msgstr "Error! Deze database bestaat niet!"
+msgstr "Fout! Deze database bestaat niet!"
 
 #. module: auto_backup
-#: help:db.backup,emailtonotify:0
-msgid "Fill in the e-mail where you want to be notified that the backup failed on the FTP."
+#: model:ir.model.fields,help:auto_backup.field_db_backup__email_to_notify
+msgid ""
+"Fill in the e-mail where you want to be notified that the backup failed on "
+"the FTP."
 msgstr "Vul de e-mail in waarop u wilt verwittigd worden als de backup mislukt op de FTP."
 
 #. module: auto_backup
-#: view:db.backup:auto_backup.view_backup_conf_form
+#: model_terms:ir.ui.view,arch_db:auto_backup.view_backup_config_form
 msgid "For example: /odoo/backups/"
 msgstr "Bijvoorbeeld: /odoo/backups/"
 
 #. module: auto_backup
-#: view:db.backup:auto_backup.view_backup_conf_form
+#: model_terms:ir.ui.view,arch_db:auto_backup.view_backup_config_form
 msgid "Go to Settings / Technical / Automation / Scheduled Actions."
-msgstr "Ga naar Instellingen / Technsich / Automatisering / Geplande acties"
+msgstr "Ga naar Instellingen / Technisch / Automatisering / Geplande acties."
 
 #. module: auto_backup
-#: view:db.backup:auto_backup.view_backup_conf_form
+#: model_terms:ir.ui.view,arch_db:auto_backup.view_backup_config_form
 msgid "Help"
 msgstr "Help"
 
 #. module: auto_backup
-#: field:db.backup,host:0
+#: code:addons/auto_backup/models/db_backup.py:0
+#, python-format
+msgid "Here is what we got instead:\n"
+msgstr "Hier is wat we in de plaats terugkregen:\n"
+
+#. module: auto_backup
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup__host
 msgid "Host"
 msgstr "Host"
 
 #. module: auto_backup
-#: field:db.backup,id:0
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup__id
 msgid "ID"
 msgstr "ID"
 
 #. module: auto_backup
-#: field:db.backup,sftpip:0
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup__sftp_host
 msgid "IP Address SFTP Server"
 msgstr "IP adres SFTP server"
 
 #. module: auto_backup
-#: help:db.backup,sendmailsftpfail:0
-msgid "If you check this option you can choose to automaticly get e-mailed when the backup to the external server failed."
-msgstr "Als u deze optie aanvinkt kan u kiezen om automatisch een e-mail aan te krijgen als de backup
-naar de externe server mislukt."
+#: model:ir.model.fields,help:auto_backup.field_db_backup__send_mail_sftp_fail
+msgid ""
+"If you check this option you can choose to automaticly get e-mailed when the"
+" backup to the external server failed."
+msgstr "Als u deze optie aanvinkt kan u kiezen om automatisch een e-mail aan te krijgen als de backuaar de externe server mislukt."
 
 #. module: auto_backup
-#: help:db.backup,autoremove:0
-msgid "If you check this option you can choose to automaticly remove the backup after xx days"
-msgstr "Als u deze optie aanvinkt kan u kiezen om automatisch backups te verwijderen na xx dagen"
+#: model:ir.model.fields,help:auto_backup.field_db_backup__autoremove
+msgid ""
+"If you check this option you can choose to automaticly remove the backup "
+"after xx days"
+msgstr "Als u deze optie aanvinkt kan u kiezen om automatisch backups te verwijderen "
+"na xx dagen"
 
 #. module: auto_backup
-#: help:db.backup,sftpwrite:0
-msgid "If you check this option you can specify the details needed to write to a remote server with SFTP."
-msgstr "Als u deze optie aanvinkt kan u de details invullen die nodig zijn om te connecteren met de externe SFTP server."
+#: model:ir.model.fields,help:auto_backup.field_db_backup__sftp_write
+msgid ""
+"If you check this option you can specify the details needed to write to a "
+"remote server with SFTP."
+msgstr "Als u deze optie aanvinkt kan u de details invullen die nodig zijn om te connecteren met de "
+" externe SFTP server"
 
 #. module: auto_backup
-#: field:db.backup,write_uid:0
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup____last_update
+msgid "Last Modified on"
+msgstr "Laatst gewijzigd op"
+
+#. module: auto_backup
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup__write_uid
 msgid "Last Updated by"
 msgstr "Laatst bijgewerkt door"
 
 #. module: auto_backup
-#: field:db.backup,write_date:0
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup__write_date
 msgid "Last Updated on"
 msgstr "Laatst bijgewerkt op"
 
 #. module: auto_backup
-#: view:db.backup:auto_backup.view_backup_conf_form
+#: model_terms:ir.ui.view,arch_db:auto_backup.view_backup_config_form
 msgid "Local backup configuration"
-msgstr "Lokale backup configuratie"
+msgstr "Lokale back-up configuratie"
 
 #. module: auto_backup
-#: view:db.backup:auto_backup.view_backup_conf_form
+#: model:res.groups,name:auto_backup.group_manager
+msgid "Manager"
+msgstr "Beheerder"
+
+#. module: auto_backup
+#: model_terms:ir.ui.view,arch_db:auto_backup.view_backup_config_form
 msgid "Need more help?"
 msgstr "Meer hulp nodig?"
 
 #. module: auto_backup
-#: field:db.backup,sftppassword:0
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup__sftp_password
 msgid "Password User SFTP Server"
 msgstr "Wachtwoord gebruiker SFTP server"
 
 #. module: auto_backup
-#: field:db.backup,sftppath:0
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup__sftp_path
 msgid "Path external server"
 msgstr "Pad externe server"
 
 #. module: auto_backup
-#: field:db.backup,port:0
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup__port
 msgid "Port"
 msgstr "Poort"
 
 #. module: auto_backup
-#: field:db.backup,daystokeepsftp:0
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup__days_to_keep_sftp
 msgid "Remove SFTP after x days"
-msgstr "SFTP verwijderen na x dagen"
+msgstr "Verwijderd SFTP na x dagen"
 
 #. module: auto_backup
-#: field:db.backup,daystokeep:0
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup__days_to_keep
 msgid "Remove after x days"
-msgstr "Verwijderen na x dagen"
+msgstr "Verwijder na x dagen"
 
 #. module: auto_backup
-#: view:db.backup:auto_backup.view_backup_conf_form
+#: model_terms:ir.ui.view,arch_db:auto_backup.view_backup_config_form
 msgid "SFTP"
 msgstr "SFTP"
 
 #. module: auto_backup
-#: field:db.backup,sftpport:0
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup__sftp_port
 msgid "SFTP Port"
 msgstr "SFTP poort"
 
 #. module: auto_backup
-#: view:db.backup:auto_backup.view_backup_conf_search
-msgid "Search options"
-msgstr "Zoekopties"
-
-#. module: auto_backup
-#: view:db.backup:auto_backup.view_backup_conf_form
+#: model_terms:ir.ui.view,arch_db:auto_backup.view_backup_config_form
 msgid "Search the action named 'Backup scheduler'."
-msgstr "Zoek de actie genaamd 'Backup scheduler'."
+msgstr "Zoek de actie met de naam 'Backup planner'."
 
 #. module: auto_backup
-#: view:db.backup:auto_backup.view_backup_conf_form
-msgid "Set the scheduler to active and fill in how often you want backups generated."
-msgstr "Zet de planner op actief en vul in hoe vaak de backup moet gemaakt worden."
+#: model_terms:ir.ui.view,arch_db:auto_backup.view_backup_config_form
+msgid ""
+"Set the scheduler to active and fill in how often you want backups "
+"generated."
+msgstr "Zet de planner actief en vul in hoe vaak u wilt dat er backups gegenereerd "
+"worden."
 
 #. module: auto_backup
-#: view:db.backup:auto_backup.view_backup_conf_form
-msgid "Test"
-msgstr "Test"
-
-#. module: auto_backup
-#: view:db.backup:auto_backup.view_backup_conf_form
+#: model_terms:ir.ui.view,arch_db:auto_backup.view_backup_config_form
 msgid "Test SFTP Connection"
-msgstr "Test SFTP Connectie"
+msgstr "Test SFTP verbinding"
 
 #. module: auto_backup
-#: help:db.backup,sftpip:0
+#: model:ir.model.fields,help:auto_backup.field_db_backup__sftp_host
 msgid "The IP address from your remote server. For example 192.168.0.1"
 msgstr "Het IP adres van uw externe server. Bijvoorbeeld: 192.168.0.1"
 
 #. module: auto_backup
-#: help:db.backup,sftppath:0
-msgid "The location to the folder where the dumps should be written to. For example /odoo/backups/.\n"
+#: model:ir.model.fields,help:auto_backup.field_db_backup__sftp_path
+msgid ""
+"The location to the folder where the dumps should be written to. For example /odoo/backups/.\n"
 "Files will then be written to /odoo/backups/ on your remote server."
 msgstr "De locatie naar de folder waar de backup naar toe moet geschreven worden. Bijvoorbeeld odoo/backups/\n"
 "Bestanden worden dan naar /odoo/backups/ geschreven op de externe server"
 
 #. module: auto_backup
-#: help:db.backup,sftppassword:0
-msgid "The password from the user where the SFTP connection should be made with. This is the password from the user on the external server."
-msgstr "Het wachtwoord van de gebruiker waar de SFTP connectie mee moet gemaakt worden. Dit is het wachtwoord van de gebruiker op de externe server."
+#: model:ir.model.fields,help:auto_backup.field_db_backup__sftp_password
+msgid ""
+"The password from the user where the SFTP connection should be made with. "
+"This is the password from the user on the external server."
+msgstr "Het wachtwoord van de gebruiker waar de SFTP connectie mee moet gemaakt worden. "
+"Dit is het wachtwoord van de gebruiker op de externe server."
 
 #. module: auto_backup
-#: help:db.backup,sftpport:0
+#: model:ir.model.fields,help:auto_backup.field_db_backup__sftp_port
 msgid "The port on the FTP server that accepts SSH/SFTP calls."
 msgstr "De poort op de FTP server die SSH/SFTP accepteert."
 
 #. module: auto_backup
-#: help:db.backup,sftpusername:0
-msgid "The username where the SFTP connection should be made with. This is the user on the external server."
-msgstr "De gebruikersnaam waar de SFTP connectie mee gemaakt moet worden. Dit is de gebruiker op de externe server."
+#: model:ir.model.fields,help:auto_backup.field_db_backup__sftp_user
+msgid ""
+"The username where the SFTP connection should be made with. This is the user"
+" on the external server."
+msgstr "De gebruikersnaam waar de SFTP connectie mee gemaakt moet worden. Dit is de gebruiker"
+" op de externe server."
 
 #. module: auto_backup
-#: view:db.backup:auto_backup.view_backup_conf_form
-msgid "This configures the scheduler for automatic backup of the given database running on given host at given port on regular intervals."
-msgstr "Dit configureert de planner voor automatische backups op de ingegeven database waar de host, poort en database op zijn ingegeven voor reguliere intervallen."
+#: model_terms:ir.ui.view,arch_db:auto_backup.view_backup_config_form
+msgid ""
+"This configures the scheduler for automatic backup of the given database running on given host\n"
+"                        at given port on regular intervals.\n"
+"                        <br/>\n"
+"                        Automatic backups of the database can be scheduled as follows:"
+msgstr "Dit configureert de planner om automatische backups van de opgegeven database te maken die op deze host,\n"
+"                        op een bepaalde poort draaien, op regelmatige intervals.\n"
+"                        <br/>\n"
+"                        Automatische backups kunnen als volgt ingepland worden:"
 
 #. module: auto_backup
-#: view:db.backup:auto_backup.view_backup_conf_form
-msgid "Use SFTP with caution! This writes files to external servers under the path you specify."
-msgstr "Gebruik SFTP voorzichtig! Dit schrijft bestanden naar externe servers onder het pad dat u opgeeft."
+#: model:ir.module.category,description:auto_backup.module_management
+msgid "User access level for this module"
+msgstr "Gebruikerstoegang voor deze module"
 
 #. module: auto_backup
-#: field:db.backup,sftpusername:0
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup__sftp_user
 msgid "Username SFTP Server"
-msgstr "Gebruikersnaam SFTP Server"
+msgstr "Gebruikersnaam SFTP server"
 
 #. module: auto_backup
-#: view:db.backup:auto_backup.view_backup_conf_form
-msgid "Warning:"
-msgstr "Waarschuwing:"
-
-#. module: auto_backup
-#: field:db.backup,sftpwrite:0
+#: model:ir.model.fields,field_description:auto_backup.field_db_backup__sftp_write
 msgid "Write to external server with sftp"
 msgstr "Schrijf naar externe server met SFTP"
+
+#. module: auto_backup
+#: model:ir.model.fields.selection,name:auto_backup.selection__db_backup__backup_type__zip
+msgid "Zip"
+msgstr "ZIP"
+
