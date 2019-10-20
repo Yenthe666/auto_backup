@@ -20,8 +20,7 @@ msgstr ""
 msgid ""
 "<b>Warning:</b>\n"
 "                        Use SFTP with caution! This writes files to external servers under the path you specify."
-msgstr ""
-"<b>Waarschuwing:</b>\n"
+msgstr "<b>Waarschuwing:</b>\n"
 "                        Gebruik SFTP voorzichtig! Dit schrijft bestanden naar externe servers onder het pad dat u opgeeft."
 
 #. module: auto_backup
@@ -37,7 +36,7 @@ msgstr "Auto backup toegang"
 #. module: auto_backup
 #: model:ir.model.fields,field_description:auto_backup.field_db_backup__send_mail_sftp_fail
 msgid "Auto. E-mail on backup fail"
-msgstr ""
+msgstr "Auto. e-mail bij mislukte back-up"
 
 #. module: auto_backup
 #: model:ir.model.fields,field_description:auto_backup.field_db_backup__autoremove
@@ -86,7 +85,8 @@ msgstr "Back-ups"
 msgid ""
 "Choose after how many days the backup should be deleted from the FTP server. For example:\n"
 "If you fill in 5 the backups will be removed after 5 days from the FTP server."
-msgstr ""
+msgstr "Kies na hoeveel dagen de backups verwijderd moeten worden van de FTP server. Bijvoorbeeld:\n"
+"Als u 5 invult zal de backup na 5 dagen verwijderd worden van de FTP server."
 
 #. module: auto_backup
 #: model:ir.model.fields,help:auto_backup.field_db_backup__days_to_keep
@@ -114,9 +114,8 @@ msgstr "Connectie test mislukt!"
 msgid ""
 "Connection Test Succeeded!\n"
 "Everything seems properly set up for FTP back-ups!"
-msgstr ""
-"Connection Test Succeeded!\n"
-"Alles lijkt correct opgezet voor FTP backups!"
+msgstr "Connectie test succesvol!\n"
+"Alles lijkt correct opgezet voor FTP back-ups!"
 
 #. module: auto_backup
 #: model_terms:ir.ui.view,arch_db:auto_backup.view_backup_config_form
@@ -151,7 +150,7 @@ msgstr "Schermnaam"
 #. module: auto_backup
 #: model:ir.model.fields.selection,name:auto_backup.selection__db_backup__backup_type__dump
 msgid "Dump"
-msgstr ""
+msgstr "Dump"
 
 #. module: auto_backup
 #: model:ir.model.fields,field_description:auto_backup.field_db_backup__email_to_notify
