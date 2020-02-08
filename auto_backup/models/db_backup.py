@@ -264,7 +264,7 @@ class DbBackup(models.Model):
                     # an e-mail notification about this.
                     if rec.send_mail_sftp_fail:
                         try:
-                            ir_mail_server = self.env['ir.mail_server']
+                            ir_mail_server = self.env['ir.mail_server'].search([], order='sequence asc', limit=1)
                             message = "Dear,\n\nThe backup for the server " + rec.host + " (IP: " + rec.sftp_host + \
                                       ") failed.Please check the following details:\n\nIP address SFTP server: " + \
                                       rec.sftp_host + "\nUsername: " + rec.sftp_user + "\nPassword: " + \
@@ -274,7 +274,7 @@ class DbBackup(models.Model):
                                                              "Backup from " + rec.host + "(" + rec.sftp_host +
                                                              ") failed",
                                                              message)
-                            ir_mail_server.send_email(self._cr, self._uid, msg)
+                            ir_mail_server.send_email(msg)
                         except Exception:
                             pass
 
