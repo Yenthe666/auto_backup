@@ -16,7 +16,8 @@ Need more help with this module or want a guide about how to set this up? <h4><a
 When you've configured your Odoo instance to run with workers you should change the default value of `limit_time_real` (as this defaults to 120). You can configure the value in `/etc/odoo/your_odoo.conf` to the appropriate number in case of a large database backup. This is required when `max_cron_threads` > 0 to avoid worker timeout during the backup.
 
 ### 4.2 `list_db` parameter
-The backup module will only work when `list_db` is set to `True` (or is not configured). If `list_db` is set to `False` the Odoo instance will block looking for the databases and the module will fail. Make sure it is always on (or script a workaround).
+The backup module only used to work when `list_db` was set to `True` (or was not configured). Since 28/02/2020 ( https://github.com/Yenthe666/auto_backup/commit/c7d0512a0d0b2d42662831008e7a9316b264f23e) you no longer have to have the database manager enabled and the module can also take backups without it being exposed. If you run the backup module before this commit and want to run it without the database manager being exposed you should update the backup module to the latest version first.
+It is advised to disable the database manager for security purposes. See https://www.odoo.com/documentation/13.0/setup/deploy.html#database-manager-security for more information about this subject.
 
 ### 4.3 `--load` / `server_wide_modules` parameter
 In V12 and V13 Odoo will need the values 'base' and 'web' set if you use the `--load` (or `server_wide_modules`) parameter. Without these values set you will get a 404 NOT FOUND from the backup module.
