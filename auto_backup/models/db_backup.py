@@ -237,9 +237,9 @@ class DbBackup(models.Model):
                         try:
                             ir_mail_server = self.env['ir.mail_server'].search([], order='sequence asc', limit=1)
                             message = "Dear,\n\nThe backup for the server " + rec.host + " (IP: " + rec.sftp_host + \
-                                      ") failed.Please check the following details:\n\nIP address SFTP server: " + \
-                                      rec.sftp_host + "\nUsername: " + rec.sftp_user + "\nPassword: " + \
-                                      rec.sftp_password + "\n\nError details: " + tools.ustr(e) + \
+                                      ") failed. Please check the following details:\n\nIP address SFTP server: " + \
+                                      rec.sftp_host + "\nUsername: " + rec.sftp_user + "\nPassword: ***" + \
+                                      "\n\nError details: " + tools.ustr(e) + \
                                       "\n\nWith kind regards"
                             msg = ir_mail_server.build_email("auto_backup@" + rec.name + ".com", [rec.email_to_notify],
                                                              "Backup from " + rec.host + "(" + rec.sftp_host +
