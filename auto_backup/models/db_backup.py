@@ -238,7 +238,7 @@ class DbBackup(models.Model):
                             ir_mail_server = self.env['ir.mail_server'].search([], order='sequence asc', limit=1)
                             message = "Dear,\n\nThe backup for the server " + rec.host + " (IP: " + rec.sftp_host + \
                                       ") failed. Please check the following details:\n\nIP address SFTP server: " + \
-                                      rec.sftp_host + "\nUsername: " + rec.sftp_user + "\nPassword: ***" + \
+                                      rec.sftp_host + "\nUsername: " + rec.sftp_user + \
                                       "\n\nError details: " + tools.ustr(e) + \
                                       "\n\nWith kind regards"
                             catch_all_domain = self.env["ir.config_parameter"].sudo().get_param("mail.catchall.domain")
