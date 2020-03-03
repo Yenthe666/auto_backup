@@ -237,11 +237,13 @@ class DbBackup(models.Model):
                         try:
                             ir_mail_server = self.env['ir.mail_server'].search([], order='sequence asc', limit=1)
                             message = "Dear,\n\nThe backup for the server " + rec.host + " (IP: " + rec.sftp_host + \
-                                      ") failed.Please check the following details:\n\nIP address SFTP server: " + \
-                                      rec.sftp_host + "\nUsername: " + rec.sftp_user + "\nPassword: " + \
-                                      rec.sftp_password + "\n\nError details: " + tools.ustr(e) + \
+                                      ") failed. Please check the following details:\n\nIP address SFTP server: " + \
+                                      rec.sftp_host + "\nUsername: " + rec.sftp_user + \
+                                      "\n\nError details: " + tools.ustr(e) + \
                                       "\n\nWith kind regards"
-                            msg = ir_mail_server.build_email("auto_backup@" + rec.name + ".com", [rec.email_to_notify],
+                            catch_all_domain = self.env["ir.config_parameter"].sudo().get_param("mail.catchall.domain")
+                            response_mail = "auto_backup@%s" % catch_all_domain if catch_all_domain else self.env.user.partner_id.email
+                            msg = ir_mail_server.build_email(response_mail, [rec.email_to_notify],
                                                              "Backup from " + rec.host + "(" + rec.sftp_host +
                                                              ") failed",
                                                              message)
