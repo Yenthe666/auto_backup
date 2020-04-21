@@ -3,25 +3,16 @@
 import os
 import datetime
 import time
-import socket
+import shutil
+import json
+import tempfile
 
 from odoo import models, fields, api, tools, _
-from odoo.exceptions import Warning
+from odoo.exceptions import Warning, AccessDenied
 import odoo
 
 import logging
 _logger = logging.getLogger(__name__)
-import shutil
-import json
-import tempfile
-from odoo.exceptions import AccessDenied
-
-
-try:
-    from xmlrpc import client as xmlrpclib
-except ImportError:
-    import xmlrpclib
-
 
 try:
     import paramiko
