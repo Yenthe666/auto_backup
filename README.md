@@ -23,5 +23,9 @@ It is advised to disable the database manager for security purposes. See https:/
 In V12 and V13 Odoo will need the values 'base' and 'web' set if you use the `--load` (or `server_wide_modules`) parameter. Without these values set you will get a 404 NOT FOUND from the backup module.
 For more information see https://github.com/Yenthe666/auto_backup/issues/122
 
+### 4.4 "No matching record found for external id" error
+This happens when you've installed - or tried to install - the back-up module without having the dependency `pysftp` installed.
+You might need to restart your Odoo instance or even your whole server for Odoo to recognize the Python package.
+
 ## 5. Bugs or problems
 Please post them here under 'Issues' and I will get back to you as soon as I can!
