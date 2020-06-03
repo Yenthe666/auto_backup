@@ -18,7 +18,7 @@ Automatic backup for all such configured databases can then be scheduled as foll
 """,
 
     'author': "Yenthe Van Ginneken",
-    'website': "http:/www.odoo.yenthevg.com",
+    'website': "http://www.odoo.yenthevg.com",
     'category': 'Administration',
     'version': '1.0',
     'installable': True,
