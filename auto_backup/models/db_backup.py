@@ -215,7 +215,7 @@ class DbBackup(models.Model):
                             # on the Odoo form it will be removed.
                             if delta.days >= rec.days_to_keep_sftp:
                                 # Only delete files, no directories!
-                                if sftp.isfile(fullpath) and (".dump" in file or '.zip' in file):
+                                if (".dump" in file or '.zip' in file):
                                     _logger.info("Delete too old file from SFTP servers: " + file)
                                     sftp.unlink(file)
                     # Close the SFTP session.
