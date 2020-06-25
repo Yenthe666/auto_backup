@@ -19,6 +19,7 @@ import time
 import base64
 import socket
 
+import stat
 
 try:
     import paramiko
@@ -246,7 +247,7 @@ class db_backup(models.Model):
                             # If the file is older than the days_to_keep_sftp (the days to keep that the user filled in on the Odoo form it will be removed.
                             if delta.days >= rec.days_to_keep_sftp:
                                 # Only delete files, no directories!
-                                if sftp.isfile(fullpath) and (".dump" in file or '.zip' in file):
+                                if stat.S_ISREG(sftp.stat(fullpath).st_mode) and (".dump" in file or '.zip' in file):
                                     _logger.info("Delete too old file from SFTP servers: " + file)
                                     sftp.unlink(file)
                     # Close the SFTP session.
