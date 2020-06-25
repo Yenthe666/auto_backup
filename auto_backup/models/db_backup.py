@@ -232,6 +232,7 @@ class db_backup(models.Model):
                     # Navigate in to the correct folder.
                     sftp.chdir(pathToWriteTo)
 
+                    _logger.info("Checking expired files")
                     # Loop over all files in the directory from the back-ups.
                     # We will check the creation date of every back-up.
                     for file in sftp.listdir(pathToWriteTo):
@@ -252,7 +253,8 @@ class db_backup(models.Model):
                     # Close the SFTP session.
                     sftp.close()
                 except Exception as e:
-                    _logger.debug('Exception! We couldn\'t back up to the FTP server..')
+                    sftp.close()
+                    _logger.error('Exception! We couldn\'t back up to the FTP server..')
                     # At this point the SFTP backup failed. We will now check if the user wants
                     # an e-mail notification about this.
                     if rec.send_mail_sftp_fail:
