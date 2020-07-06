@@ -232,7 +232,7 @@ class db_backup(models.Model):
                     # Navigate in to the correct folder.
                     sftp.chdir(pathToWriteTo)
 
-                    _logger.info("Checking expired files")
+                    _logger.debug("Checking expired files")
                     # Loop over all files in the directory from the back-ups.
                     # We will check the creation date of every back-up.
                     for file in sftp.listdir(pathToWriteTo):
