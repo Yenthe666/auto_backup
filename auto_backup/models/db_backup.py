@@ -254,7 +254,7 @@ class db_backup(models.Model):
                     sftp.close()
                 except Exception as e:
                     sftp.close()
-                    _logger.error('Exception! We couldn\'t back up to the FTP server..')
+                    _logger.error('Exception! We couldn\'t back up to the FTP server. Here is what we got back instead: %s' % str(e))
                     # At this point the SFTP backup failed. We will now check if the user wants
                     # an e-mail notification about this.
                     if rec.send_mail_sftp_fail:
