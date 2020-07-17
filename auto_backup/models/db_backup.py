@@ -219,7 +219,7 @@ class DbBackup(models.Model):
                                     _logger.info("Delete too old file from SFTP servers: " + file)
                                     sftp.unlink(file)
                     # Close the SFTP session.
-                    sftp.close()
+                    #sftp.close() this will be closed at the end of the code
                 except Exception as e:
                     _logger.debug('Exception! We couldn\'t back up to the FTP server..')
                     # At this point the SFTP backup failed. We will now check if the user wants
@@ -241,6 +241,10 @@ class DbBackup(models.Model):
                             ir_mail_server.send_email(msg)
                         except Exception:
                             pass
+                finally:
+                    #Be sure that SFTP connection will always get closed at the end
+                    if sftp:
+                        sftp.close()
 
             """
             Remove all old files (on local server) in case this is configured..
