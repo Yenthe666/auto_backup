@@ -82,6 +82,8 @@ class DbBackup(models.Model):
         message_content = ""
         error = ""
         has_failed = False
+        s = False
+        sftp = False
 
         for rec in self:
             path_to_write_to = rec.sftp_path
@@ -108,6 +110,8 @@ class DbBackup(models.Model):
             finally:
                 if s:
                     s.close()
+                if sftp:
+                    sftp.close()
 
         if has_failed:
             raise Warning(message_title + '\n\n' + message_content + "%s" % str(error))
@@ -153,6 +157,8 @@ class DbBackup(models.Model):
                     username_login = rec.sftp_user
                     password_login = rec.sftp_password
                     _logger.debug('sftp remote path: %s' % path_to_write_to)
+                    sftp = False
+                    s = False
 
                     try:
                         s = paramiko.SSHClient()
@@ -240,11 +246,16 @@ class DbBackup(models.Model):
                                                              message)
                             ir_mail_server.send_email(msg)
                         except Exception:
+                            _logger.critical("Error sending email")                           
                             pass
                 finally:
                     #Be sure that SFTP connection will always get closed at the end
                     if sftp:
                         sftp.close()
+                        _logger.info("Close SFTP Connection, variable sftp")
+                    if s:
+                        s.close()
+                        _logger.info("Close SFTP Connection, variable s")
 
             """
             Remove all old files (on local server) in case this is configured..
