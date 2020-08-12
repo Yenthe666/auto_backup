@@ -252,8 +252,13 @@ class db_backup(models.Model):
                                     sftp.unlink(file)
                     # Close the SFTP session.
                     sftp.close()
+                    s.close()
                 except Exception as e:
-                    sftp.close()
+                    try:
+                        sftp.close()
+                        s.close()
+                    except:
+                        pass
                     _logger.error('Exception! We couldn\'t back up to the FTP server. Here is what we got back instead: %s' % str(e))
                     # At this point the SFTP backup failed. We will now check if the user wants
                     # an e-mail notification about this.
