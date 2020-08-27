@@ -240,7 +240,7 @@ class db_backup(models.Model):
                             # Get the full path
                             fullpath = os.path.join(pathToWriteTo, file)
                             # Get the timestamp from the file on the external server
-                            timestamp = sftp.stat(fullpath).st_atime
+                            timestamp = sftp.stat(fullpath).st_mtime
                             createtime = datetime.datetime.fromtimestamp(timestamp)
                             now = datetime.datetime.now()
                             delta = now - createtime
