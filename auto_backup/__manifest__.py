@@ -22,7 +22,7 @@
     'author': "Yenthe Van Ginneken",
     'website': "http://www.odoo.yenthevg.com",
     'category': 'Administration',
-    'version': '13.1.0.1',
+    'version': '14.0.0.1',
     'installable': True,
     'license': 'LGPL-3',
 
