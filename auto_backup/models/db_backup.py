@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 import os
 import datetime
@@ -184,13 +183,13 @@ class DbBackup(models.Model):
                                 try:
                                     sftp.stat(os.path.join(path_to_write_to, f))
                                     _logger.debug(
-                                        'File %s already exists on the remote FTP Server ------ skipped' % fullpath)
+                                        'File %s already exists on the remote FTP Server ------ skipped', fullpath)
                                 # This means the file does not exist (remote) yet!
                                 except IOError:
                                     try:
                                         # sftp.put(fullpath, path_to_write_to)
                                         sftp.put(fullpath, os.path.join(path_to_write_to, f))
-                                        _logger.info('Copying File % s------ success' % fullpath)
+                                        _logger.info('Copying File % s------ success', fullpath)
                                     except Exception as err:
                                         _logger.critical(
                                             'We couldn\'t write the file to the remote server. Error: ' + str(err))
@@ -214,7 +213,7 @@ class DbBackup(models.Model):
                             # on the Odoo form it will be removed.
                             if delta.days >= rec.days_to_keep_sftp:
                                 # Only delete files, no directories!
-                                if (".dump" in file or '.zip' in file):
+                                if ".dump" in file or '.zip' in file:
                                     _logger.info("Delete too old file from SFTP servers: " + file)
                                     sftp.unlink(file)
                     # Close the SFTP session.
@@ -265,7 +264,7 @@ class DbBackup(models.Model):
                         if delta.days >= rec.days_to_keep:
                             # Only delete files (which are .dump and .zip), no directories.
                             if os.path.isfile(fullpath) and (".dump" in f or '.zip' in f):
-                                _logger.info("Delete local out-of-date file: " + fullpath)
+                                _logger.info("Delete local out-of-date file: %s", fullpath)
                                 os.remove(fullpath)
 
     # This is more or less the same as the default Odoo function at

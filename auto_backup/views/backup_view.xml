@@ -1,12 +1,11 @@
 <odoo>
-    <data>
-        <record id="view_backup_config_form" model="ir.ui.view">
-            <field name="name">db.backup.form</field>
-            <field name="model">db.backup</field>
-            <field name="type">form</field>
-            <field name="arch" type="xml">
-                <form string="Back-up view">
-                    <sheet>
+    <record id="view_backup_config_form" model="ir.ui.view">
+        <field name="name">db.backup.form</field>
+        <field name="model">db.backup</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Back-up view">
+                <sheet>
                     <group col="4" colspan="4">
                         <separator col="2" string="Local backup configuration"/>
                     </group>
@@ -23,7 +22,8 @@
                         <separator col="2" string="SFTP"/>
                     </group>
                     <div style="width:50%;border-radius:10px;margin: 10px 0px;padding:15px 10px 15px 10px;
-background-repeat: no-repeat;background-position: 10px center;color: #9F6000;background-color: #FEEFB3;"
+                        background-repeat: no-repeat;background-position: 10px center;color: #9F6000;
+                        background-color: #FEEFB3;"
                          attrs="{'invisible': [('sftp_write','=',False)]}">
                         <b>Warning:</b>
                         Use SFTP with caution! This writes files to external servers under the path you specify.
@@ -72,35 +72,34 @@ background-repeat: no-repeat;background-position: 10px center;color: #9F6000;bac
                             <a href="https://github.com/Yenthe666/auto_backup/issues">Contact me!</a>
                         </p>
                     </div>
-                    </sheet>
-                </form>
-            </field>
-        </record>
+                </sheet>
+            </form>
+        </field>
+    </record>
 
-        <record id="view_backup_config_tree" model="ir.ui.view">
-            <field name="name">db.backup.tree</field>
-            <field name="model">db.backup</field>
-            <field name="type">tree</field>
-            <field name="arch" type="xml">
-                <tree string="Backups">
-                    <field name='host'/>
-                    <field name='port'/>
-                    <field name='name'/>
-                    <field name='folder'/>
-                    <field name="autoremove"/>
-                    <field name="sftp_host"/>
-                </tree>
-            </field>
-        </record>
+    <record id="view_backup_config_tree" model="ir.ui.view">
+        <field name="name">db.backup.tree</field>
+        <field name="model">db.backup</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name='host'/>
+                <field name='port'/>
+                <field name='name'/>
+                <field name='folder'/>
+                <field name="autoremove"/>
+                <field name="sftp_host"/>
+            </tree>
+        </field>
+    </record>
 
-        <record id="action_backup" model="ir.actions.act_window">
-            <field name="name">Configure back-ups</field>
-            <field name="res_model">db.backup</field>
-            <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="view_backup_config_tree"/>
-        </record>
+    <record id="action_backup" model="ir.actions.act_window">
+        <field name="name">Configure back-ups</field>
+        <field name="res_model">db.backup</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_backup_config_tree"/>
+    </record>
 
-        <menuitem id="auto_backup_menu" name="Back-ups" parent="base.menu_custom"/>
-        <menuitem parent="auto_backup_menu" action="action_backup" id="backup_conf_menu"/>
-    </data>
+    <menuitem id="auto_backup_menu" name="Back-ups" parent="base.menu_custom"/>
+    <menuitem parent="auto_backup_menu" action="action_backup" id="backup_conf_menu"/>
 </odoo>
