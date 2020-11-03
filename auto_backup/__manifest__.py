@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 {
     'name': "Database auto-backup",
     'summary': 'Automated backups',

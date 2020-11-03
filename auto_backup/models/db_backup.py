@@ -97,7 +97,7 @@ class DbBackup(models.Model):
                 sftp = s.open_sftp()
                 message_title = _("Connection Test Succeeded!\nEverything seems properly set up for FTP back-ups!")
             except Exception as e:
-                _logger.critical('There was a problem connecting to the remote ftp: ' + str(e))
+                _logger.critical('There was a problem connecting to the remote ftp: %s', str(e))
                 error += str(e)
                 has_failed = True
                 message_title = _("Connection Test Failed!")
@@ -136,7 +136,7 @@ class DbBackup(models.Model):
                 _logger.debug(
                     "Couldn't backup database %s. Bad database administrator password for server running at "
                     "http://%s:%s" % (rec.name, rec.host, rec.port))
-                _logger.debug("Exact error from the exception: " + str(error))
+                _logger.debug("Exact error from the exception: %s", str(error))
                 continue
 
             # Check if user wants to write to SFTP or not.
@@ -149,7 +149,7 @@ class DbBackup(models.Model):
                     port_host = rec.sftp_port
                     username_login = rec.sftp_user
                     password_login = rec.sftp_password
-                    _logger.debug('sftp remote path: %s' % path_to_write_to)
+                    _logger.debug('sftp remote path: %s', path_to_write_to)
 
                     try:
                         s = paramiko.SSHClient()
@@ -157,7 +157,7 @@ class DbBackup(models.Model):
                         s.connect(ip_host, port_host, username_login, password_login, timeout=20)
                         sftp = s.open_sftp()
                     except Exception as error:
-                        _logger.critical('Error connecting to remote server! Error: ' + str(error))
+                        _logger.critical('Error connecting to remote server! Error: %s', str(error))
 
                     try:
                         sftp.chdir(path_to_write_to)
@@ -169,7 +169,8 @@ class DbBackup(models.Model):
                             try:
                                 sftp.chdir(current_directory)
                             except:
-                                _logger.info('(Part of the) path didn\'t exist. Creating it now at ' + current_directory)
+                                _logger.info('(Part of the) path didn\'t exist. Creating it now at %s',
+                                             current_directory)
                                 # Make directory and then navigate into it
                                 sftp.mkdir(current_directory, 777)
                                 sftp.chdir(current_directory)
@@ -187,12 +188,11 @@ class DbBackup(models.Model):
                                 # This means the file does not exist (remote) yet!
                                 except IOError:
                                     try:
-                                        # sftp.put(fullpath, path_to_write_to)
                                         sftp.put(fullpath, os.path.join(path_to_write_to, f))
                                         _logger.info('Copying File % s------ success', fullpath)
                                     except Exception as err:
                                         _logger.critical(
-                                            'We couldn\'t write the file to the remote server. Error: ' + str(err))
+                                            'We couldn\'t write the file to the remote server. Error: %s', str(err))
 
                     # Navigate in to the correct folder.
                     sftp.chdir(path_to_write_to)
@@ -214,7 +214,7 @@ class DbBackup(models.Model):
                             if delta.days >= rec.days_to_keep_sftp:
                                 # Only delete files, no directories!
                                 if ".dump" in file or '.zip' in file:
-                                    _logger.info("Delete too old file from SFTP servers: " + file)
+                                    _logger.info("Delete too old file from SFTP servers: %s", file)
                                     sftp.unlink(file)
                     # Close the SFTP session.
                     sftp.close()
@@ -225,7 +225,8 @@ class DbBackup(models.Model):
                         s.close()
                     except:
                         pass
-                    _logger.error('Exception! We couldn\'t back up to the FTP server. Here is what we got back instead: %s' % str(e))
+                    _logger.error('Exception! We couldn\'t back up to the FTP server. Here is what we got back '
+                                  'instead: %s', str(e))
                     # At this point the SFTP backup failed. We will now check if the user wants
                     # an e-mail notification about this.
                     if rec.send_mail_sftp_fail:
