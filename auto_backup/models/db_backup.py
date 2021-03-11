@@ -296,6 +296,12 @@ class DbBackup(models.Model):
                     shutil.copytree(filestore, os.path.join(dump_dir, 'filestore'))
                 with open(os.path.join(dump_dir, 'manifest.json'), 'w') as fh:
                     db = odoo.sql_db.db_connect(db_name)
+                    user = db.dsn.get('user')
+                    password = db.dsn.get('password')
+                    if user and password:
+                        os.system('SET PGPASSWORD=' + password)
+                        cmd[1] = '-U'
+                        cmd.insert(2, user)
                     with db.cursor() as cr:
                         json.dump(self._dump_db_manifest(cr), fh, indent=4)
                 cmd.insert(-1, '--file=' + os.path.join(dump_dir, 'dump.sql'))
