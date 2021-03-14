@@ -83,7 +83,6 @@ class DbBackup(models.Model):
         has_failed = False
 
         for rec in self:
-            path_to_write_to = rec.sftp_path
             ip_host = rec.sftp_host
             port_host = rec.sftp_port
             username_login = rec.sftp_user
@@ -95,6 +94,7 @@ class DbBackup(models.Model):
                 s.set_missing_host_key_policy(paramiko.AutoAddPolicy())
                 s.connect(ip_host, port_host, username_login, password_login, timeout=10)
                 sftp = s.open_sftp()
+                sftp.close()
                 message_title = _("Connection Test Succeeded!\nEverything seems properly set up for FTP back-ups!")
             except Exception as e:
                 _logger.critical('There was a problem connecting to the remote ftp: %s', str(e))
@@ -247,9 +247,7 @@ class DbBackup(models.Model):
                         except Exception:
                             pass
 
-            """
-            Remove all old files (on local server) in case this is configured..
-            """
+            # Remove all old files (on local server) in case this is configured..
             if rec.autoremove:
                 directory = rec.folder
                 # Loop over all files in the directory.
