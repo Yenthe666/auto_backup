@@ -288,7 +288,7 @@ class DbBackup(models.Model):
         cmd.append(db_name)
 
         if backup_format == 'zip':
-            with odoo.tools.osutil.tempdir() as dump_dir:
+            with tempfile.TemporaryDirectory() as dump_dir:
                 filestore = odoo.tools.config.filestore(db_name)
                 if os.path.exists(filestore):
                     shutil.copytree(filestore, os.path.join(dump_dir, 'filestore'))
