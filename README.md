@@ -27,5 +27,10 @@ For more information see https://github.com/Yenthe666/auto_backup/issues/122
 This happens when you've installed - or tried to install - the back-up module without having the dependency `pysftp` installed.
 You might need to restart your Odoo instance or even your whole server for Odoo to recognize the Python package.
 
+### 4.5 Running on Odoo.sh
+At the moment this module is not compatible with Odoo.sh.<br/>
+This is because Odoo.sh does not allow database operations on this level and thus our backup module cannot generate a backup.<br/>
+There is currently no known workaround for this.
+
 ## 5. Bugs or problems
 Please post them here under 'Issues' and I will get back to you as soon as I can!
