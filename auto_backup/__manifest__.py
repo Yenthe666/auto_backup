@@ -33,4 +33,7 @@
         'views/backup_view.xml',
         'data/backup_data.xml',
     ],
+    'external_dependencies': {
+        'python': ['paramiko'],
+    },
 }
