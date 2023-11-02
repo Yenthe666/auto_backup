@@ -126,17 +126,17 @@ class DbBackup(models.Model):
             # Create name for dumpfile.
             bkp_file = '%s_%s.%s' % (time.strftime('%Y_%m_%d_%H_%M_%S'), rec.name, rec.backup_type)
             file_path = os.path.join(rec.folder, bkp_file)
-            fp = open(file_path, 'wb')
+
             try:
                 # try to backup database and write it away
                 fp = open(file_path, 'wb')
                 self._take_dump(rec.name, fp, 'db.backup', rec.backup_type)
                 fp.close()
             except Exception as error:
-                _logger.debug(
+                _logger.error(
                     "Couldn't backup database %s. Bad database administrator password for server running at "
                     "http://%s:%s" % (rec.name, rec.host, rec.port))
-                _logger.debug("Exact error from the exception: %s", str(error))
+                _logger.error("Exact error from the exception: %s", str(error))
                 continue
 
             # Check if user wants to write to SFTP or not.
@@ -247,13 +247,13 @@ class DbBackup(models.Model):
                         except Exception:
                             pass
 
-            # Remove all old files (on local server) in case this is configured..
+            # Remove all old files (on local server) in case this is configured.
             if rec.autoremove:
                 directory = rec.folder
                 # Loop over all files in the directory.
                 for f in os.listdir(directory):
                     fullpath = os.path.join(directory, f)
-                    # Only delete the ones wich are from the current database
+                    # Only delete the ones which are from the current database
                     # (Makes it possible to save different databases in the same folder)
                     if rec.name in fullpath:
                         timestamp = os.stat(fullpath).st_ctime
@@ -271,7 +271,7 @@ class DbBackup(models.Model):
     # The main difference is that we do not do have a wrapper for the function check_db_management_enabled here and
     # that we authenticate based on the cron its user id and by checking if we have 'db.backup' defined in the function
     # call. Since this function is called from the cron and since we have these security checks on model and on user_id
-    # its pretty impossible to hack any way to take a backup. This allows us to disable the Odoo database manager
+    # it's pretty impossible to hack any way to take a backup. This allows us to disable the Odoo database manager
     # which is a MUCH safer way
     def _take_dump(self, db_name, stream, model, backup_format='zip'):
         """Dump database `db` into file-like object `stream` if stream is None
@@ -289,6 +289,9 @@ class DbBackup(models.Model):
 
         if backup_format == 'zip':
             with tempfile.TemporaryDirectory() as dump_dir:
+                cmd.insert(-1, '--file=' + os.path.join(dump_dir, 'dump.sql'))
+                odoo.tools.exec_pg_command(*cmd)
+
                 filestore = odoo.tools.config.filestore(db_name)
                 if os.path.exists(filestore):
                     shutil.copytree(filestore, os.path.join(dump_dir, 'filestore'))
@@ -296,8 +299,7 @@ class DbBackup(models.Model):
                     db = odoo.sql_db.db_connect(db_name)
                     with db.cursor() as cr:
                         json.dump(self._dump_db_manifest(cr), fh, indent=4)
-                cmd.insert(-1, '--file=' + os.path.join(dump_dir, 'dump.sql'))
-                odoo.tools.exec_pg_command(*cmd)
+
                 if stream:
                     odoo.tools.osutil.zip_dir(dump_dir, stream, include_dir=False, fnct_sort=lambda file_name: file_name != 'dump.sql')
                 else:
