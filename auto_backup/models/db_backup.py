@@ -126,7 +126,6 @@ class DbBackup(models.Model):
             # Create name for dumpfile.
             bkp_file = '%s_%s.%s' % (time.strftime('%Y_%m_%d_%H_%M_%S'), rec.name, rec.backup_type)
             file_path = os.path.join(rec.folder, bkp_file)
-            fp = open(file_path, 'wb')
             try:
                 # try to backup database and write it away
                 fp = open(file_path, 'wb')
