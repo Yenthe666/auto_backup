@@ -16,39 +16,28 @@
                         <field name="backup_type"/>
                         <field name="folder"/>
                         <field name="autoremove"/>
-                        <field name="days_to_keep" attrs="{'invisible': [('autoremove','=',False)]}"/>
+                        <field name="days_to_keep" invisible="autoremove == False"/>
                     </group>
                     <group name="allow_stfp" col="4" colspan="4">
                         <separator col="2" string="SFTP"/>
                     </group>
-                    <div style="width:50%;border-radius:10px;margin: 10px 0px;padding:15px 10px 15px 10px;
+                    <div invisible="sftp_write == False" style="width:50%;border-radius:10px;margin: 10px 0px;padding:15px 10px 15px 10px;
                         background-repeat: no-repeat;background-position: 10px center;color: #9F6000;
-                        background-color: #FEEFB3;"
-                         attrs="{'invisible': [('sftp_write','=',False)]}">
+                        background-color: #FEEFB3;">
                         <b>Warning:</b>
                         Use SFTP with caution! This writes files to external servers under the path you specify.
                     </div>
                     <group name="sftp_configuration">
                         <field name="sftp_write"/>
-                        <field name="sftp_host"
-                               attrs="{'invisible':[('sftp_write', '=', False)],'required':[('sftp_write', '=', True)]}"/>
-                        <field name="sftp_port"
-                               attrs="{'invisible':[('sftp_write', '=', False)],'required':[('sftp_write', '=', True)]}"/>
-                        <field name="sftp_user"
-                               attrs="{'invisible':[('sftp_write', '=', False)], 'required':[('sftp_write', '=', True)]}"/>
-                        <field name="sftp_password"
-                               attrs="{'invisible':[('sftp_write', '=', False)],'required': [('sftp_write', '=', True)]}"
-                               password="True"/>
-                        <field name="sftp_path"
-                               attrs="{'invisible':[('sftp_write', '==', False)],'required':[('sftp_write', '==', True)]}"
-                               placeholder="For example: /odoo/backups/"/>
-                        <field name="days_to_keep_sftp"
-                               attrs="{'invisible': [('sftp_write', '=', False)], 'required': [('sftp_write', '=', True)]}"/>
-                        <field name="send_mail_sftp_fail" attrs="{'invisible': [('sftp_write','=',False)]}"/>
-                        <field name="email_to_notify"
-                               attrs="{'invisible':['|',('send_mail_sftp_fail', '==', False), ('sftp_write', '=', False)], 'required': [('send_mail_sftp_fail', '=', True)]}"/>
-                        <button name="test_sftp_connection" type="object"
-                                attrs="{'invisible': [('sftp_write','=',False)]}" string="Test SFTP Connection"/>
+                        <field name="sftp_host" invisible="sftp_write == False" required="sftp_write == True"/>
+                        <field name="sftp_port" invisible="sftp_write == False" required="sftp_write == True"/>
+                        <field name="sftp_user" invisible="sftp_write == False" required="sftp_write == True"/>
+                        <field name="sftp_password" invisible="sftp_write == False" required="sftp_write == True" password="True"/>
+                        <field name="sftp_path" invisible="sftp_write == False" required="sftp_write == True" placeholder="For example: /odoo/backups/"/>
+                        <field name="days_to_keep_sftp" invisible="sftp_write == False" required="sftp_write == True"/>
+                        <field name="send_mail_sftp_fail" invisible="sftp_write == False"/>
+                        <field name="email_to_notify" invisible="send_mail_sftp_fail == False or sftp_write == False" required="send_mail_sftp_fail == True"/>
+                        <button name="test_sftp_connection" type="object" string="Test SFTP Connection" invisible="sftp_write == False" />
                     </group>
                     <separator string="Help" colspan="2"/>
                     <div name="configuration_details">

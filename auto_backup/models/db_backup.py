@@ -7,7 +7,7 @@ import json
 import tempfile
 
 from odoo import models, fields, api, tools, _
-from odoo.exceptions import Warning, AccessDenied
+from odoo.exceptions import UserError, AccessDenied
 import odoo
 
 import logging
@@ -109,9 +109,9 @@ class DbBackup(models.Model):
                     s.close()
 
         if has_failed:
-            raise Warning(message_title + '\n\n' + message_content + "%s" % str(error))
+            raise UserError(message_title + '\n\n' + message_content + "%s" % str(error))
         else:
-            raise Warning(message_title + '\n\n' + message_content)
+            raise UserError(message_title + '\n\n' + message_content)
 
     @api.model
     def schedule_backup(self):
