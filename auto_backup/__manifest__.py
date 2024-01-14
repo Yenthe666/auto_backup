@@ -19,9 +19,10 @@
     'author': "Yenthe Van Ginneken",
     'website': "http://www.odoo.yenthevg.com",
     'category': 'Administration',
-    'version': '16.0.0.1',
+    'version': '17.0.0.1',
     'installable': True,
     'license': 'LGPL-3',
+    'module_type': 'official',
 
     # any module necessary for this one to work correctly
     'depends': ['base'],
