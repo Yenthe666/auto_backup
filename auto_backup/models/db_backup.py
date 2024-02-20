@@ -5,6 +5,7 @@ import time
 import shutil
 import json
 import tempfile
+import subprocess
 
 from odoo import models, fields, api, tools, _
 from odoo.exceptions import Warning, AccessDenied
@@ -76,7 +77,6 @@ class DbBackup(models.Model):
     def test_sftp_connection(self, context=None):
         self.ensure_one()
 
-        # Check if there is a success or fail and write messages
         message_title = ""
         message_content = ""
         error = ""
@@ -88,30 +88,47 @@ class DbBackup(models.Model):
             username_login = rec.sftp_user
             password_login = rec.sftp_password
 
-            # Connect with external server over SFTP, so we know sure that everything works.
+            s = paramiko.SSHClient()
+
             try:
-                s = paramiko.SSHClient()
                 s.set_missing_host_key_policy(paramiko.AutoAddPolicy())
                 s.connect(ip_host, port_host, username_login, password_login, timeout=10)
                 sftp = s.open_sftp()
                 sftp.close()
-                message_title = _("Connection Test Succeeded!\nEverything seems properly set up for FTP back-ups!")
+                message_title = _("Connection Test Succeeded!")
+                message_content = _("Everything seems properly set up for FTP back-ups!")
             except Exception as e:
                 _logger.critical('There was a problem connecting to the remote ftp: %s', str(e))
-                error += str(e)
+                error = str(e)
                 has_failed = True
                 message_title = _("Connection Test Failed!")
                 if len(rec.sftp_host) < 8:
                     message_content += "\nYour IP address seems to be too short.\n"
-                message_content += _("Here is what we got instead:\n")
             finally:
                 if s:
                     s.close()
 
         if has_failed:
-            raise Warning(message_title + '\n\n' + message_content + "%s" % str(error))
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': message_title,
+                    'message': message_content + "\n\n" + error,
+                    'sticky': False,
+                }
+            }
         else:
-            raise Warning(message_title + '\n\n' + message_content)
+            _logger.info(message_title + '\n\n' + message_content)
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': message_title,
+                    'message': message_content,
+                    'sticky': False,
+                }
+            }
 
     @api.model
     def schedule_backup(self):
@@ -295,22 +312,29 @@ class DbBackup(models.Model):
                     db = odoo.sql_db.db_connect(db_name)
                     with db.cursor() as cr:
                         json.dump(self._dump_db_manifest(cr), fh, indent=4)
-                cmd.insert(-1, '--file=' + os.path.join(dump_dir, 'dump.sql'))
-                odoo.tools.exec_pg_command(*cmd)
+                cmd.append('--file=' + os.path.join(dump_dir, 'dump.sql'))
+                subprocess.run(cmd, check=True)  # Use subprocess.run instead of exec_pg_command
                 if stream:
-                    odoo.tools.osutil.zip_dir(dump_dir, stream, include_dir=False, fnct_sort=lambda file_name: file_name != 'dump.sql')
+                    odoo.tools.osutil.zip_dir(dump_dir, stream, include_dir=False,
+                                              fnct_sort=lambda file_name: file_name != 'dump.sql')
                 else:
-                    t=tempfile.TemporaryFile()
-                    odoo.tools.osutil.zip_dir(dump_dir, t, include_dir=False, fnct_sort=lambda file_name: file_name != 'dump.sql')
+                    t = tempfile.TemporaryFile()
+                    odoo.tools.osutil.zip_dir(dump_dir, t, include_dir=False,
+                                              fnct_sort=lambda file_name: file_name != 'dump.sql')
                     t.seek(0)
                     return t
         else:
-            cmd.insert(-1, '--format=c')
-            stdin, stdout = odoo.tools.exec_pg_command_pipe(*cmd)
-            if stream:
-                shutil.copyfileobj(stdout, stream)
-            else:
-                return stdout
+            cmd.append('--format=c')
+            # Use subprocess.Popen for streaming output
+            with subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, bufsize=-1) as process:
+                stdout, stderr = process.communicate()
+                if process.returncode != 0:
+                    _logger.error("Dump command failed: %s", stderr)
+                    raise Exception("Dump command failed")
+                if stream:
+                    stream.write(stdout)
+                else:
+                    return stdout
 
     def _dump_db_manifest(self, cr):
         pg_version = "%d.%d" % divmod(cr._obj.connection.server_version / 100, 100)
