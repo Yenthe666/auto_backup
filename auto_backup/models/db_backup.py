@@ -5,7 +5,7 @@ import time
 import shutil
 import json
 import tempfile
-
+import subprocess
 from odoo import models, fields, api, tools, _
 from odoo.exceptions import UserError, AccessDenied
 import odoo
@@ -34,7 +34,7 @@ class DbBackup(models.Model):
     port = fields.Char('Port', required=True, default=8069)
     name = fields.Char('Database', required=True, help='Database you want to schedule backups for',
                        default=_get_db_name)
-    folder = fields.Char('Backup Directory', help='Absolute path for storing the backups', required='True',
+    folder = fields.Char('Backup Directory', help='Absolute path for storing the backups', required=True,
                          default='/odoo/backups')
     backup_type = fields.Selection([('zip', 'Zip'), ('dump', 'Dump')], 'Backup Type', required=True, default='zip')
     autoremove = fields.Boolean('Auto. Remove Backups',
@@ -283,8 +283,8 @@ class DbBackup(models.Model):
 
         _logger.info('DUMP DB: %s format %s', db_name, backup_format)
 
-        cmd = ['pg_dump', '--no-owner']
-        cmd.append(db_name)
+        cmd = [tools.find_pg_tool('pg_dump'), '--no-owner', db_name]
+        env = tools.exec_pg_environ()
 
         if backup_format == 'zip':
             with tempfile.TemporaryDirectory() as dump_dir:
@@ -296,7 +296,7 @@ class DbBackup(models.Model):
                     with db.cursor() as cr:
                         json.dump(self._dump_db_manifest(cr), fh, indent=4)
                 cmd.insert(-1, '--file=' + os.path.join(dump_dir, 'dump.sql'))
-                odoo.tools.exec_pg_command(*cmd)
+                subprocess.run(cmd, env=env, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, check=True)
                 if stream:
                     odoo.tools.osutil.zip_dir(dump_dir, stream, include_dir=False, fnct_sort=lambda file_name: file_name != 'dump.sql')
                 else:
@@ -306,7 +306,7 @@ class DbBackup(models.Model):
                     return t
         else:
             cmd.insert(-1, '--format=c')
-            stdin, stdout = odoo.tools.exec_pg_command_pipe(*cmd)
+            stdout = subprocess.Popen(cmd, env=env, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE).stdout
             if stream:
                 shutil.copyfileobj(stdout, stream)
             else:
