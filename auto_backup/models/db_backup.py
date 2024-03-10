@@ -5,11 +5,11 @@ import time
 import shutil
 import json
 import tempfile
-
+import subprocess
 from odoo import models, fields, api, tools, _
 from odoo.exceptions import Warning, AccessDenied
 import odoo
-
+from odoo.tools import find_pg_tool, exec_pg_environ
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -275,7 +275,7 @@ class DbBackup(models.Model):
     def _take_dump(self, db_name, stream, model, backup_format='zip'):
         """Dump database `db` into file-like object `stream` if stream is None
         return a file object with the dump """
-
+        env = exec_pg_environ()
         cron_user_id = self.env.ref('auto_backup.backup_scheduler').user_id.id
         if self._name != 'db.backup' or cron_user_id != self.env.user.id:
             _logger.error('Unauthorized database operation. Backups should only be available from the cron job.')
@@ -283,8 +283,8 @@ class DbBackup(models.Model):
 
         _logger.info('DUMP DB: %s format %s', db_name, backup_format)
 
-        cmd = ['pg_dump', '--no-owner']
-        cmd.append(db_name)
+        cmd = [find_pg_tool('pg_dump'), '--no-owner', db_name]
+        # cmd.append(db_name)
 
         if backup_format == 'zip':
             with tempfile.TemporaryDirectory() as dump_dir:
@@ -296,7 +296,7 @@ class DbBackup(models.Model):
                     with db.cursor() as cr:
                         json.dump(self._dump_db_manifest(cr), fh, indent=4)
                 cmd.insert(-1, '--file=' + os.path.join(dump_dir, 'dump.sql'))
-                odoo.tools.exec_pg_command(*cmd)
+                subprocess.run(cmd, env=env, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, check=True)
                 if stream:
                     odoo.tools.osutil.zip_dir(dump_dir, stream, include_dir=False, fnct_sort=lambda file_name: file_name != 'dump.sql')
                 else:
@@ -306,7 +306,7 @@ class DbBackup(models.Model):
                     return t
         else:
             cmd.insert(-1, '--format=c')
-            stdin, stdout = odoo.tools.exec_pg_command_pipe(*cmd)
+            stdout = subprocess.Popen(cmd, env=env, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE).stdout
             if stream:
                 shutil.copyfileobj(stdout, stream)
             else:
