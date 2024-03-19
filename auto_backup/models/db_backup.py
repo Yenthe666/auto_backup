@@ -5,6 +5,7 @@ import time
 import shutil
 import json
 import tempfile
+import subprocess
 
 from odoo import models, fields, api, tools, _
 from odoo.exceptions import Warning, AccessDenied
@@ -295,8 +296,8 @@ class DbBackup(models.Model):
                     db = odoo.sql_db.db_connect(db_name)
                     with db.cursor() as cr:
                         json.dump(self._dump_db_manifest(cr), fh, indent=4)
-                cmd.insert(-1, '--file=' + os.path.join(dump_dir, 'dump.sql'))
-                odoo.tools.exec_pg_command(*cmd)
+                cmd.append('--file=' + os.path.join(dump_dir, 'dump.sql'))
+                subprocess.run(cmd, check=True)
                 if stream:
                     odoo.tools.osutil.zip_dir(dump_dir, stream, include_dir=False, fnct_sort=lambda file_name: file_name != 'dump.sql')
                 else:
@@ -305,10 +306,11 @@ class DbBackup(models.Model):
                     t.seek(0)
                     return t
         else:
-            cmd.insert(-1, '--format=c')
-            stdin, stdout = odoo.tools.exec_pg_command_pipe(*cmd)
+            cmd.append('--format=c')
+            process = subprocess.Popen(cmd,stdout=subprocess.PIPE)
+            stdout, _ = process.communicate()
             if stream:
-                shutil.copyfileobj(stdout, stream)
+                stream.write(stdout)
             else:
                 return stdout
 
