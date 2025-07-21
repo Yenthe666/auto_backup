@@ -16,7 +16,7 @@
     <record id="odoo_sh_db_backup_inherit_tree_views" model="ir.ui.view">
         <field name="name">odoo.sh.db.backup.inherit.view.tree</field>
         <field name="model">db.backup</field>
-        <field name="inherit_id" ref="auto_backup.view_backup_config_tree"/>
+        <field name="inherit_id" ref="auto_backup.view_backup_config_list"/>
         <field name="arch" type="xml">
             <field name="sftp_host" position="after">
                 <field name="is_odoo_sh_instance" widget="boolean_toggle"/>
