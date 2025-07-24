@@ -1,8 +1,8 @@
 ## 1. Prerequisites
-This module needs the Python library pysftp, otherwise it cannot be installed and used. Install pysftp through the command <code>sudo pip install pysftp</code>
+This module needs the Python library paramiko, otherwise it cannot be installed and used. Install paramiko through the command <code>sudo pip install paramiko</code>
 
 ## 2. Which version to choose?
-Version 16.0 is the latest stable version for this module and is compatible with the latest Odoo version (Odoo 16).
+Version 18.0 is the latest stable version for this module and is compatible with the latest Odoo version (Odoo 18).
 The versions 8.0, 9.0, 10.0, 11.0, 12.0 and 13.0 of this module are tested and verified to work for their specific Odoo versions. The master version is the development version and will be for the next Odoo version.
 The master version is still in testing and contains the newest features, which might still have problems/error.<br/>
 <b>Tip:</b> At this point the master version is being rewritten to drop the pysftp library need, please don't use this version at this point.<br/>

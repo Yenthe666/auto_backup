@@ -6,6 +6,7 @@ import shutil
 import json
 import tempfile
 import subprocess
+
 from odoo import models, fields, api, tools, _
 from odoo.exceptions import UserError, AccessDenied
 import odoo
@@ -26,14 +27,15 @@ class DbBackup(models.Model):
     _description = 'Backup configuration record'
 
     def _get_db_name(self):
-        dbName = self._cr.dbname
-        return dbName
+        db_name = self._cr.dbname
+        return db_name
 
     # Columns for local server configuration
     host = fields.Char('Host', required=True, default='localhost')
     port = fields.Char('Port', required=True, default=8069)
     name = fields.Char('Database', required=True, help='Database you want to schedule backups for',
                        default=_get_db_name)
+    db_port = fields.Char(string='Database Port', required=True, default=5432)
     folder = fields.Char('Backup Directory', help='Absolute path for storing the backups', required=True,
                          default='/odoo/backups')
     backup_type = fields.Selection([('zip', 'Zip'), ('dump', 'Dump')], 'Backup Type', required=True, default='zip')
@@ -116,20 +118,22 @@ class DbBackup(models.Model):
     @api.model
     def schedule_backup(self):
         conf_ids = self.search([])
-        for rec in conf_ids:
 
+        for rec in conf_ids:
             try:
                 if not os.path.isdir(rec.folder):
                     os.makedirs(rec.folder)
             except:
                 raise
+
             # Create name for dumpfile.
             bkp_file = '%s_%s.%s' % (time.strftime('%Y_%m_%d_%H_%M_%S'), rec.name, rec.backup_type)
             file_path = os.path.join(rec.folder, bkp_file)
+
             try:
                 # try to backup database and write it away
                 fp = open(file_path, 'wb')
-                self._take_dump(rec.name, fp, 'db.backup', rec.backup_type)
+                self._take_dump(rec.name, rec.db_port, fp, 'db.backup', rec.backup_type)
                 fp.close()
             except Exception as error:
                 _logger.debug(
@@ -163,8 +167,10 @@ class DbBackup(models.Model):
                     except IOError:
                         # Create directory and subdirs if they do not exist.
                         current_directory = ''
+
                         for dirElement in path_to_write_to.split('/'):
                             current_directory += dirElement + '/'
+
                             try:
                                 sftp.chdir(current_directory)
                             except:
@@ -174,11 +180,14 @@ class DbBackup(models.Model):
                                 sftp.mkdir(current_directory, 777)
                                 sftp.chdir(current_directory)
                                 pass
+
                     sftp.chdir(path_to_write_to)
+
                     # Loop over all files in the directory.
                     for f in os.listdir(dir):
                         if rec.name in f:
                             fullpath = os.path.join(dir, f)
+
                             if os.path.isfile(fullpath):
                                 try:
                                     sftp.stat(os.path.join(path_to_write_to, f))
@@ -215,6 +224,7 @@ class DbBackup(models.Model):
                                 if ".dump" in file or '.zip' in file:
                                     _logger.info("Delete too old file from SFTP servers: %s", file)
                                     sftp.unlink(file)
+
                     # Close the SFTP session.
                     sftp.close()
                     s.close()
@@ -226,6 +236,7 @@ class DbBackup(models.Model):
                         pass
                     _logger.error('Exception! We couldn\'t back up to the FTP server. Here is what we got back '
                                   'instead: %s', str(e))
+
                     # At this point the SFTP backup failed. We will now check if the user wants
                     # an e-mail notification about this.
                     if rec.send_mail_sftp_fail:
@@ -249,9 +260,11 @@ class DbBackup(models.Model):
             # Remove all old files (on local server) in case this is configured..
             if rec.autoremove:
                 directory = rec.folder
+
                 # Loop over all files in the directory.
                 for f in os.listdir(directory):
                     fullpath = os.path.join(directory, f)
+
                     # Only delete the ones wich are from the current database
                     # (Makes it possible to save different databases in the same folder)
                     if rec.name in fullpath:
@@ -272,45 +285,63 @@ class DbBackup(models.Model):
     # call. Since this function is called from the cron and since we have these security checks on model and on user_id
     # its pretty impossible to hack any way to take a backup. This allows us to disable the Odoo database manager
     # which is a MUCH safer way
-    def _take_dump(self, db_name, stream, model, backup_format='zip'):
+    def _take_dump(self, db_name, db_port, stream, model, backup_format='zip'):
         """Dump database `db` into file-like object `stream` if stream is None
         return a file object with the dump """
-
         cron_user_id = self.env.ref('auto_backup.backup_scheduler').user_id.id
+
         if self._name != 'db.backup' or cron_user_id != self.env.user.id:
             _logger.error('Unauthorized database operation. Backups should only be available from the cron job.')
             raise AccessDenied()
 
         _logger.info('DUMP DB: %s format %s', db_name, backup_format)
 
-        cmd = [tools.find_pg_tool('pg_dump'), '--no-owner', db_name]
-        env = tools.exec_pg_environ()
+        cmd = ['pg_dump', '--no-owner', db_name, '-p', db_port]
 
         if backup_format == 'zip':
             with tempfile.TemporaryDirectory() as dump_dir:
                 filestore = odoo.tools.config.filestore(db_name)
+
                 if os.path.exists(filestore):
                     shutil.copytree(filestore, os.path.join(dump_dir, 'filestore'))
                 with open(os.path.join(dump_dir, 'manifest.json'), 'w') as fh:
                     db = odoo.sql_db.db_connect(db_name)
                     with db.cursor() as cr:
                         json.dump(self._dump_db_manifest(cr), fh, indent=4)
-                cmd.insert(-1, '--file=' + os.path.join(dump_dir, 'dump.sql'))
-                subprocess.run(cmd, env=env, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, check=True)
+
+                dump_file = os.path.join(dump_dir, 'dump.sql')
+                cmd.append(f'--file={dump_file}')
+
+                try:
+                    subprocess.run(cmd, check=True)
+                except Exception as e:
+                    _logger.error('Database dump failed: %s', e)
+                    raise
+
                 if stream:
-                    odoo.tools.osutil.zip_dir(dump_dir, stream, include_dir=False, fnct_sort=lambda file_name: file_name != 'dump.sql')
+                    odoo.tools.osutil.zip_dir(dump_dir, stream, include_dir=False,
+                                              fnct_sort=lambda file_name: file_name != 'dump.sql')
                 else:
-                    t=tempfile.TemporaryFile()
-                    odoo.tools.osutil.zip_dir(dump_dir, t, include_dir=False, fnct_sort=lambda file_name: file_name != 'dump.sql')
+                    t = tempfile.TemporaryFile()
+                    odoo.tools.osutil.zip_dir(dump_dir, t, include_dir=False,
+                                              fnct_sort=lambda file_name: file_name != 'dump.sql')
                     t.seek(0)
                     return t
         else:
-            cmd.insert(-1, '--format=c')
-            stdout = subprocess.Popen(cmd, env=env, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE).stdout
-            if stream:
-                shutil.copyfileobj(stdout, stream)
-            else:
-                return stdout
+            cmd.append('--format=c')
+            try:
+                process = subprocess.run(cmd, capture_output=True, check=True, text=True)
+
+                if stream:
+                    stream.write(process.stdout)
+                else:
+                    t = tempfile.TemporaryFile()
+                    t.write(process.stdout.encode())
+                    t.seek(0)
+                    return t
+            except subprocess.CalledProcessError as e:
+                _logger.error('Database dump failed: %s', e)
+                raise
 
     def _dump_db_manifest(self, cr):
         pg_version = "%d.%d" % divmod(cr._obj.connection.server_version / 100, 100)
