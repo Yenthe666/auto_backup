@@ -1,0 +1,20 @@
+<odoo>
+    <record id="view_db_backup_form_inherit" model="ir.ui.view">
+        <field name="name">db.backup.form.inherit.s3</field>
+        <field name="model">db.backup</field>
+        <field name="inherit_id" ref="auto_backup.view_backup_config_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet/group[@name='sftp_configuration']" position="after">
+                <group string="Amazon S3 Configuration">
+                        <field name="s3_write" />
+                        <field name="s3_bucket_name" invisible="s3_write == False" required="s3_write == True"/>
+                        <field name="s3_access_key" invisible="s3_write == False" required="s3_write == True"/>
+                        <field name="s3_secret_key" invisible="s3_write == False" required="s3_write == True"/>
+                        <field name="s3_region" invisible="s3_write == False" required="s3_write == True"/>
+                        <field name="s3_folder_name" invisible="s3_write == False" required="s3_write == True"/>
+                        <button name="action_test_s3_connection" type="object" string="Test S3 Connection" invisible="s3_write == False"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
