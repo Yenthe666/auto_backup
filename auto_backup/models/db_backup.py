@@ -283,8 +283,8 @@ class DbBackup(models.Model):
 
         _logger.info('DUMP DB: %s format %s', db_name, backup_format)
 
-        cmd = [tools.find_pg_tool('pg_dump'), '--no-owner', db_name]
-        env = tools.exec_pg_environ()
+        cmd = [tools.misc.find_pg_tool('pg_dump'), '--no-owner', db_name]
+        env = tools.misc.exec_pg_environ()
 
         if backup_format == 'zip':
             with tempfile.TemporaryDirectory() as dump_dir:
