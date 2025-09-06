@@ -1,4 +1,3 @@
-
 import os
 import datetime
 import time
@@ -7,6 +6,7 @@ import json
 import tempfile
 import subprocess
 from odoo import models, fields, api, tools, _
+from odoo.tools.misc import exec_pg_environ, find_pg_tool
 from odoo.exceptions import UserError, AccessDenied
 import odoo
 
@@ -272,9 +272,11 @@ class DbBackup(models.Model):
     # call. Since this function is called from the cron and since we have these security checks on model and on user_id
     # its pretty impossible to hack any way to take a backup. This allows us to disable the Odoo database manager
     # which is a MUCH safer way
+
     def _take_dump(self, db_name, stream, model, backup_format='zip'):
         """Dump database `db` into file-like object `stream` if stream is None
         return a file object with the dump """
+        print(stream)
 
         cron_user_id = self.env.ref('auto_backup.backup_scheduler').user_id.id
         if self._name != 'db.backup' or cron_user_id != self.env.user.id:
@@ -283,8 +285,8 @@ class DbBackup(models.Model):
 
         _logger.info('DUMP DB: %s format %s', db_name, backup_format)
 
-        cmd = [tools.find_pg_tool('pg_dump'), '--no-owner', db_name]
-        env = tools.exec_pg_environ()
+        cmd = [find_pg_tool('pg_dump'), '--no-owner', db_name]
+        env = exec_pg_environ()
 
         if backup_format == 'zip':
             with tempfile.TemporaryDirectory() as dump_dir:
