@@ -8,7 +8,7 @@
     "author": "Yenthe Van Ginneken",
     "website": "https://mainframemonkey.com",
     "category": "Administration",
-    "version": "18.0.1.0.0",
+    "version": "19.0.1.0.1",
     "installable": True,
     "license": "LGPL-3",
 

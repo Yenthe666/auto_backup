@@ -45,7 +45,7 @@ class DbBackup(models.Model):
         if self.is_odoo_sh_instance and not self.sftp_write:
             raise ValidationError(_('The option "Write to external server with sftp" must be activated as we can only backup to remote instances with Odoo.sh.'))
 
-    def _take_dump(self, db_name, db_port, stream, model, backup_format='zip', odoo_sh=True):
+    def _take_dump(self, db_name, stream, model, backup_format='zip', odoo_sh=True):
         if odoo_sh:
             if backup_format == 'zip':
                 with tempfile.TemporaryDirectory() as dump_dir:
@@ -71,7 +71,7 @@ class DbBackup(models.Model):
                         t.seek(0)
                         return t
         else:
-            return super()._take_dump(db_name, db_port, stream, model, backup_format)
+            return super()._take_dump(db_name, stream, model, backup_format)
 
     @api.model
     def schedule_backup(self):
@@ -85,7 +85,7 @@ class DbBackup(models.Model):
 
             try:
                 fp = open(file_path, 'wb')
-                self._take_dump(backup.name, backup.db_port, fp, 'db.backup', backup.backup_type, odoo_sh=True)
+                self._take_dump(backup.name, fp, 'db.backup', backup.backup_type, odoo_sh=True)
                 fp.close()
             except Exception as error:
                 _logger.info("Something Went Wrong : %s", str(error))
