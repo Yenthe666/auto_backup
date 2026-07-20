@@ -8,6 +8,7 @@ import tempfile
 import subprocess
 from odoo import models, fields, api, tools, _
 from odoo.exceptions import UserError, AccessDenied
+from odoo.tools.misc import exec_pg_environ, find_pg_tool
 import odoo
 
 import logging
@@ -283,8 +284,8 @@ class DbBackup(models.Model):
 
         _logger.info('DUMP DB: %s format %s', db_name, backup_format)
 
-        cmd = [tools.find_pg_tool('pg_dump'), '--no-owner', db_name]
-        env = tools.exec_pg_environ()
+        cmd = [find_pg_tool('pg_dump'), '--no-owner', db_name]
+        env = exec_pg_environ()
 
         if backup_format == 'zip':
             with tempfile.TemporaryDirectory() as dump_dir:
